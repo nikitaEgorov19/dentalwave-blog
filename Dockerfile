@@ -15,8 +15,8 @@ RUN npm install --production
 # Copy source code with node ownership
 COPY --chown=node:node . .
 
-# Ensure data and fonts directories have correct permissions
-RUN chmod -R 755 /app/data /app/fonts
+# Ensure data directory has correct permissions
+RUN chmod -R 755 /app/data
 
 EXPOSE 3000
 
