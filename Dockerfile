@@ -4,6 +4,7 @@ FROM node:18-alpine
 RUN apk add --no-cache \
     fontconfig \
     ttf-dejavu \
+    ttf-liberation \
     && fc-cache -f -v
 
 WORKDIR /app

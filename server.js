@@ -201,13 +201,43 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-        // Alpine Linux DejaVuSans path (ttf-dejavu package)
-        const fontPath = '/usr/share/fonts/dejavu/DejaVuSans.ttf';
-        if (fs.existsSync(fontPath)) {
-            doc.font(fontPath);
-            console.log(`PDF: using DejaVuSans at ${fontPath}`);
-        } else {
-            console.log('PDF: font not found at expected path');
+        // Choose font: Times New Roman (Liberation Serif) or DejaVuSans
+        const useTimes = req.query.font === 'times';
+        let fontLoaded = false;
+
+        if (useTimes) {
+            const timesPaths = [
+                '/usr/share/fonts/truetype/liberation/LiberationSerif.ttf',
+                '/usr/share/fonts/liberation/LiberationSerif.ttf',
+                '/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf',
+            ];
+            for (const p of timesPaths) {
+                if (fs.existsSync(p)) {
+                    doc.font(p);
+                    console.log(`PDF: using Times font at ${p}`);
+                    fontLoaded = true;
+                    break;
+                }
+            }
+        }
+
+        if (!fontLoaded) {
+            const dejavuPaths = [
+                '/usr/share/fonts/dejavu/DejaVuSans.ttf',
+                '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+            ];
+            for (const p of dejavuPaths) {
+                if (fs.existsSync(p)) {
+                    doc.font(p);
+                    console.log(`PDF: using DejaVuSans at ${p}`);
+                    fontLoaded = true;
+                    break;
+                }
+            }
+        }
+
+        if (!fontLoaded) {
+            console.log('PDF: WARNING - no suitable font found, using default');
         }
 
         doc.pipe(res);
