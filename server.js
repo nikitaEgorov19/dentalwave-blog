@@ -201,17 +201,30 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-        // Use Times New Roman (Liberation Serif) by default, fallback to DejaVuSans
-        let fontPath = '/usr/share/fonts/liberation/LiberationSerif.ttf';
-        if (!fs.existsSync(fontPath)) {
-            fontPath = '/usr/share/fonts/dejavu/DejaVuSans.ttf';
+        // Try Times New Roman ( Liberation Serif ) first, then DejaVuSans
+        const fontPaths = [
+            // Times New Roman / Liberation Serif (various locations)
+            '/usr/share/fonts/liberation/LiberationSerif.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSerif.ttf',
+            '/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf',
+            '/usr/share/fonts/msttcorefonts/Times_New_Roman.ttf',
+            // DejaVuSans fallback
+            '/usr/share/fonts/dejavu/DejaVuSans.ttf',
+            '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+        ];
+        
+        let fontLoaded = false;
+        for (const p of fontPaths) {
+            if (fs.existsSync(p)) {
+                doc.font(p);
+                console.log(`PDF: using font ${p.split('/').pop()} at ${p}`);
+                fontLoaded = true;
+                break;
+            }
         }
         
-        if (fs.existsSync(fontPath)) {
-            doc.font(fontPath);
-            console.log(`PDF: using font ${fontPath.split('/').pop()}`);
-        } else {
-            console.log('PDF: WARNING - no suitable font found');
+        if (!fontLoaded) {
+            console.log('PDF: WARNING - no suitable font found, using default (may not display Cyrillic)');
         }
 
         doc.pipe(res);
