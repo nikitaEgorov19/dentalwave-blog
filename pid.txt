@@ -1,1 +1,0 @@
-$! ; Start-Sleep -Seconds 2; Get-Content output.txt; $pid = Get-Content pid.txt; try { $r = Invoke-WebRequest -Uri 'http://localhost:56789/api/test' -UseBasicParsing -TimeoutSec 3; Write-Host 'OK:' $r.StatusCode } catch { Write-Host 'Err:' $_.Exception.Message }; Stop-Process -Id $pid -Force

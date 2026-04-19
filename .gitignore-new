@@ -1,0 +1,11 @@
+# Production files only
+!server.js
+!package.json
+!package-lock.json
+!Dockerfile
+!.gitignore
+!.env.example
+!README.md
+!public/
+!data/
+!fonts/

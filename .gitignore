@@ -1,2 +1,4 @@
 node_modules/
-!.gitignore
+.env
+*.log
+.DS_Store
