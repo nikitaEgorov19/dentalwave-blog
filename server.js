@@ -266,8 +266,6 @@ app.get('/api/articles/:id/pdf', (req, res) => {
     });
     doc.end();
 });
-    doc.end();
-});
 
 // Pages
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
