@@ -23,12 +23,10 @@ const CATEGORIES_FILE = path.join(__dirname, 'data', 'categories.json');
 console.log('DATA_FILE:', DATA_FILE);
 console.log('Exists:', fs.existsSync(DATA_FILE));
 
-// Ensure data directory exists
 if (!fs.existsSync(path.join(__dirname, 'data'))) {
     fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
 }
 
-// Initialize default categories if file doesn't exist
 if (!fs.existsSync(CATEGORIES_FILE)) {
     const defaultCategories = [
         { id: 1, name: 'Детская хирургия' },
@@ -42,7 +40,6 @@ if (!fs.existsSync(CATEGORIES_FILE)) {
     console.log('Created default categories');
 }
 
-// Initialize default article if file doesn't exist
 if (!fs.existsSync(DATA_FILE)) {
     const defaultArticle = {
         id: Date.now(),
@@ -59,36 +56,27 @@ if (!fs.existsSync(DATA_FILE)) {
     console.log('Created default article');
 }
 
-// Middleware
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API routes
 app.get('/api/config', (req, res) => {
     res.json({ baseUrl: `${req.protocol}://${req.get('host')}` });
 });
 
 app.get('/api/categories', (req, res) => {
     const catFile = path.join(__dirname, 'data', 'categories.json');
-    if (!fs.existsSync(catFile)) {
-        return res.json([{ id: 1, name: 'Разное' }]);
-    }
+    if (!fs.existsSync(catFile)) return res.json([{ id: 1, name: 'Разное' }]);
     res.json(JSON.parse(fs.readFileSync(catFile, 'utf-8')));
 });
 
-// CRUD для категорий
 app.post('/api/categories', (req, res) => {
     const catFile = path.join(__dirname, 'data', 'categories.json');
     let categories = fs.existsSync(catFile) ? JSON.parse(fs.readFileSync(catFile, 'utf-8')) : [];
-    const newId = categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1;
-    const newCategory = {
-        id: newId,
-        name: req.body.name || 'Новый раздел'
-    };
+    const newId = categories.length ? Math.max(...categories.map(c => c.id)) + 1 : 1;
+    const newCategory = { id: newId, name: req.body.name || 'Новый раздел' };
     categories.push(newCategory);
     fs.writeFileSync(catFile, JSON.stringify(categories, null, 2));
-    console.log('Category added:', newCategory);
     res.json(newCategory);
 });
 
@@ -97,7 +85,6 @@ app.delete('/api/categories/:id', (req, res) => {
     let categories = fs.existsSync(catFile) ? JSON.parse(fs.readFileSync(catFile, 'utf-8')) : [];
     categories = categories.filter(c => c.id !== parseInt(req.params.id));
     fs.writeFileSync(catFile, JSON.stringify(categories, null, 2));
-    console.log('Category deleted:', req.params.id);
     res.json({ success: true });
 });
 
@@ -150,7 +137,6 @@ app.post('/api/articles', (req, res) => {
     };
     articles.push(newArticle);
     fs.writeFileSync(DATA_FILE, JSON.stringify(articles, null, 2));
-    console.log('Article created:', newArticle.title);
     res.json(newArticle);
 });
 
@@ -177,7 +163,6 @@ app.put('/api/articles/:id', (req, res) => {
             date: articles[index].date
         };
         fs.writeFileSync(DATA_FILE, JSON.stringify(articles, null, 2));
-        console.log('Article updated:', articles[index].title);
         res.json(articles[index]);
     } else {
         res.status(404).json({ error: 'Article not found' });
@@ -195,12 +180,10 @@ app.delete('/api/articles/:id', (req, res) => {
     }
 });
 
-// Admin authentication
 app.post('/api/verify', (req, res) => {
     const auth = req.headers.authorization || '';
     const credentials = Buffer.from(auth.replace('Basic ', ''), 'base64').toString();
     const [user, pass] = credentials.split(':');
-    console.log('Auth attempt:', { user, pass });
     if (user === '123' && pass === '123') {
         res.json({ success: true });
     } else {
@@ -209,89 +192,71 @@ app.post('/api/verify', (req, res) => {
 });
 
 app.get('/api/articles/:id/pdf', (req, res) => {
-    const articles = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
-    const article = articles.find(a => a.id === parseInt(req.params.id));
-    if (!article) return res.status(404).json({ error: 'Article not found' });
+    try {
+        const articles = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+        const article = articles.find(a => a.id === parseInt(req.params.id));
+        if (!article) return res.status(404).json({ error: 'Article not found' });
 
-    const doc = new PDFDocument({ margin: 50, size: 'A4' });
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
+        const doc = new PDFDocument({ margin: 50, size: 'A4' });
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-    // Try to load embedded font first (bundled with project)
-    const embeddedFont = path.join(__dirname, 'fonts', 'DejaVuSans.ttf');
-    if (fs.existsSync(embeddedFont)) {
-        doc.font(embeddedFont);
-        console.log('Using embedded font:', embeddedFont);
-    } else {
-        // Fallback to system fonts
-        const fontPaths = [
-            'C:\\Windows\\Fonts\\arial.ttf',
-            'C:\\Windows\\Fonts\\times.ttf',
-            '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
-            '/System/Library/Fonts/Helvetica.ttc',
-        ];
-        let fontLoaded = false;
-        for (const fontPath of fontPaths) {
-            if (fs.existsSync(fontPath)) {
-                try {
-                    doc.font(fontPath);
-                    fontLoaded = true;
-                    console.log('Using system font:', fontPath);
+        const embeddedFont = path.join(__dirname, 'fonts', 'DejaVuSans.ttf');
+        if (fs.existsSync(embeddedFont)) {
+            doc.font(embeddedFont);
+            console.log('PDF: using embedded font');
+        } else {
+            const fallbackPaths = [
+                '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+                '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+            ];
+            for (const p of fallbackPaths) {
+                if (fs.existsSync(p)) {
+                    doc.font(p);
+                    console.log('PDF: using system font', p);
                     break;
-                } catch (e) {
-                    continue;
                 }
             }
         }
-        if (!fontLoaded) {
-            console.log('Warning: No Cyrillic-capable font found. PDF may not display Cyrillic correctly.');
-        }
-    }
 
-    doc.pipe(res);
-    doc.fontSize(20).text(article.title, { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(12).text(`Автор: ${article.author}`, { align: 'left' });
-    doc.text(`Дата: ${article.date}`, { align: 'left' });
-    doc.moveDown();
-    if (article.annotation) {
-        doc.fontSize(14).fillColor('blue');
-        doc.text('Аннотация:', { continued: true });
-        doc.fillColor('black');
+        doc.pipe(res);
+        doc.fontSize(20).text(article.title, { align: 'center' });
         doc.moveDown();
-        doc.fontSize(12).text(article.annotation, { align: 'justify', lineGap: 5 });
-        doc.moveDown(2);
+        doc.fontSize(12).text(`Автор: ${article.author}`, { align: 'left' });
+        doc.text(`Дата: ${article.date}`, { align: 'left' });
+        doc.moveDown();
+        if (article.annotation) {
+            doc.fontSize(14).fillColor('blue');
+            doc.text('Аннотация:', { continued: true });
+            doc.fillColor('black');
+            doc.moveDown();
+            doc.fontSize(12).text(article.annotation, { align: 'justify', lineGap: 5 });
+            doc.moveDown(2);
+        }
+        doc.fontSize(12);
+        article.content.split('\n\n').forEach(para => {
+            doc.text(para, { align: 'justify', lineGap: 3 });
+            doc.moveDown();
+        });
+        doc.end();
+    } catch (err) {
+        console.error('PDF generation error:', err);
+        res.status(500).json({ error: 'PDF generation failed' });
     }
-    doc.fontSize(12);
-    article.content.split('\n\n').forEach(para => {
-        doc.text(para, { align: 'justify', lineGap: 3 });
-        doc.moveDown();
-    });
-    doc.end();
 });
 
-// Pages
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.get('/article', (req, res) => res.sendFile(path.join(__dirname, 'public', 'article.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
-// Start server
 try {
     const server = app.listen(PORT, () => {
-        console.log(`Server running at http://localhost:${PORT}`);
-        console.log(`Admin: http://localhost:${PORT}/admin`);
+        console.log(`Server running on port ${PORT}`);
     });
-
-    server.on('listening', () => {
-        console.log('Server is listening');
-    });
-
-    server.on('error', (err) => {
+    server.on('error', err => {
         console.error('SERVER ERROR:', err.code, err.message);
     });
-
 } catch (err) {
-    console.error('LISTEN FAILED:', err);
+    console.error('START ERROR:', err);
     process.exit(1);
 }
