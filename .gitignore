@@ -1,5 +1,2 @@
 node_modules/
-data/*.json
-.env
-*.log
-.DS_Store
+!.gitignore

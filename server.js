@@ -18,9 +18,46 @@ console.log('All modules loaded OK');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'articles.json');
+const CATEGORIES_FILE = path.join(__dirname, 'data', 'categories.json');
 
 console.log('DATA_FILE:', DATA_FILE);
 console.log('Exists:', fs.existsSync(DATA_FILE));
+
+// Ensure data directory exists
+if (!fs.existsSync(path.join(__dirname, 'data'))) {
+    fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
+}
+
+// Initialize default categories if file doesn't exist
+if (!fs.existsSync(CATEGORIES_FILE)) {
+    const defaultCategories = [
+        { id: 1, name: 'Детская хирургия' },
+        { id: 2, name: 'Челюстно-лицевая хирургия' },
+        { id: 3, name: 'Хирургическая стоматология' },
+        { id: 4, name: 'Ортопедическая стоматология' },
+        { id: 5, name: 'Терапевтическая стоматология' },
+        { id: 6, name: 'Ортодонтическая стоматология' }
+    ];
+    fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(defaultCategories, null, 2));
+    console.log('Created default categories');
+}
+
+// Initialize default article if file doesn't exist
+if (!fs.existsSync(DATA_FILE)) {
+    const defaultArticle = {
+        id: Date.now(),
+        title: 'ЗУБЫ Круто',
+        content: 'Ставят ли коронки на молочные зубы и что это дает...',
+        annotation: 'Краткое описание статьи о коронках на молочных зубах',
+        author: 'Админ',
+        categoryId: 1,
+        categories: [1],
+        views: 0,
+        date: new Date().toLocaleDateString('ru-RU')
+    };
+    fs.writeFileSync(DATA_FILE, JSON.stringify([defaultArticle], null, 2));
+    console.log('Created default article');
+}
 
 // Middleware
 app.use(express.static('public'));
