@@ -201,43 +201,17 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-        // Choose font: Times New Roman (Liberation Serif) or DejaVuSans
-        const useTimes = req.query.font === 'times';
-        let fontLoaded = false;
-
-        if (useTimes) {
-            const timesPaths = [
-                '/usr/share/fonts/truetype/liberation/LiberationSerif.ttf',
-                '/usr/share/fonts/liberation/LiberationSerif.ttf',
-                '/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf',
-            ];
-            for (const p of timesPaths) {
-                if (fs.existsSync(p)) {
-                    doc.font(p);
-                    console.log(`PDF: using Times font at ${p}`);
-                    fontLoaded = true;
-                    break;
-                }
-            }
+        // Use Times New Roman (Liberation Serif) by default, fallback to DejaVuSans
+        let fontPath = '/usr/share/fonts/liberation/LiberationSerif.ttf';
+        if (!fs.existsSync(fontPath)) {
+            fontPath = '/usr/share/fonts/dejavu/DejaVuSans.ttf';
         }
-
-        if (!fontLoaded) {
-            const dejavuPaths = [
-                '/usr/share/fonts/dejavu/DejaVuSans.ttf',
-                '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-            ];
-            for (const p of dejavuPaths) {
-                if (fs.existsSync(p)) {
-                    doc.font(p);
-                    console.log(`PDF: using DejaVuSans at ${p}`);
-                    fontLoaded = true;
-                    break;
-                }
-            }
-        }
-
-        if (!fontLoaded) {
-            console.log('PDF: WARNING - no suitable font found, using default');
+        
+        if (fs.existsSync(fontPath)) {
+            doc.font(fontPath);
+            console.log(`PDF: using font ${fontPath.split('/').pop()}`);
+        } else {
+            console.log('PDF: WARNING - no suitable font found');
         }
 
         doc.pipe(res);
@@ -259,6 +233,12 @@ app.get('/api/articles/:id/pdf', (req, res) => {
             doc.text(para, { align: 'justify', lineGap: 3 });
             doc.moveDown();
         });
+        doc.end();
+    } catch (err) {
+        console.error('PDF generation error:', err);
+        res.status(500).json({ error: 'PDF generation failed' });
+    }
+});
         doc.end();
     } catch (err) {
         console.error('PDF generation error:', err);
