@@ -213,32 +213,36 @@ app.get('/api/articles/:id/pdf', (req, res) => {
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-    // Try multiple font paths for cross-platform compatibility
-    const fontPaths = [
-        'C:\\Windows\\Fonts\\arial.ttf',      // Windows
-        'C:\\Windows\\Fonts\\times.ttf',      // Windows fallback
-        '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',  // Linux (Railway)
-        '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',  // Linux fallback
-        '/System/Library/Fonts/Helvetica.ttc', // macOS
-    ];
-    
-    let fontLoaded = false;
-    for (const fontPath of fontPaths) {
-        if (fs.existsSync(fontPath)) {
-            try {
-                doc.font(fontPath);
-                fontLoaded = true;
-                console.log('Using font:', fontPath);
-                break;
-            } catch (e) {
-                continue;
+    // Try to load embedded font first (bundled with project)
+    const embeddedFont = path.join(__dirname, 'fonts', 'DejaVuSans.ttf');
+    if (fs.existsSync(embeddedFont)) {
+        doc.font(embeddedFont);
+        console.log('Using embedded font:', embeddedFont);
+    } else {
+        // Fallback to system fonts
+        const fontPaths = [
+            'C:\\Windows\\Fonts\\arial.ttf',
+            'C:\\Windows\\Fonts\\times.ttf',
+            '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+            '/System/Library/Fonts/Helvetica.ttc',
+        ];
+        let fontLoaded = false;
+        for (const fontPath of fontPaths) {
+            if (fs.existsSync(fontPath)) {
+                try {
+                    doc.font(fontPath);
+                    fontLoaded = true;
+                    console.log('Using system font:', fontPath);
+                    break;
+                } catch (e) {
+                    continue;
+                }
             }
         }
-    }
-    
-    // Fallback to default if no font found (Helvetica, may not support Cyrillic)
-    if (!fontLoaded) {
-        console.log('Warning: No Cyrillic font found, using default (may not display Cyrillic correctly)');
+        if (!fontLoaded) {
+            console.log('Warning: No Cyrillic-capable font found. PDF may not display Cyrillic correctly.');
+        }
     }
 
     doc.pipe(res);
@@ -260,6 +264,8 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         doc.text(para, { align: 'justify', lineGap: 3 });
         doc.moveDown();
     });
+    doc.end();
+});
     doc.end();
 });
 
