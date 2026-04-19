@@ -201,22 +201,13 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-        const embeddedFont = path.join(__dirname, 'fonts', 'DejaVuSans.ttf');
-        if (fs.existsSync(embeddedFont)) {
-            doc.font(embeddedFont);
-            console.log('PDF: using embedded font');
+        // Use system font available on Alpine Linux (installed via Dockerfile)
+        const fontPath = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf';
+        if (fs.existsSync(fontPath)) {
+            doc.font(fontPath);
+            console.log('PDF: using DejaVuSans from system');
         } else {
-            const fallbackPaths = [
-                '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-                '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
-            ];
-            for (const p of fallbackPaths) {
-                if (fs.existsSync(p)) {
-                    doc.font(p);
-                    console.log('PDF: using system font', p);
-                    break;
-                }
-            }
+            console.log('PDF: system font not found, using default');
         }
 
         doc.pipe(res);
@@ -238,6 +229,12 @@ app.get('/api/articles/:id/pdf', (req, res) => {
             doc.text(para, { align: 'justify', lineGap: 3 });
             doc.moveDown();
         });
+        doc.end();
+    } catch (err) {
+        console.error('PDF generation error:', err);
+        res.status(500).json({ error: 'PDF generation failed' });
+    }
+});
         doc.end();
     } catch (err) {
         console.error('PDF generation error:', err);
