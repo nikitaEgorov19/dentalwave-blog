@@ -201,29 +201,13 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-        // Check all possible font locations on Alpine
-        const fontPaths = [
-            '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-            '/usr/share/fonts/ttf/DejaVuSans.ttf',
-            '/usr/share/fonts/TTF/DejaVuSans.ttf',
-            '/usr/share/fonts/dejavu/DejaVuSans.ttf',
-            '/usr/share/fonts/dejavu-sans.ttf',
-        ];
-        
-        let fontLoaded = false;
-        for (const fontPath of fontPaths) {
-            if (fs.existsSync(fontPath)) {
-                console.log(`PDF: found font at ${fontPath}`);
-                doc.font(fontPath);
-                fontLoaded = true;
-                break;
-            } else {
-                console.log(`PDF: checking ${fontPath} - not found`);
-            }
-        }
-        
-        if (!fontLoaded) {
-            console.log('PDF: WARNING - no Cyrillic font found, using default (may not display Cyrillic)');
+        // Alpine Linux DejaVuSans path (ttf-dejavu package)
+        const fontPath = '/usr/share/fonts/dejavu/DejaVuSans.ttf';
+        if (fs.existsSync(fontPath)) {
+            doc.font(fontPath);
+            console.log(`PDF: using DejaVuSans at ${fontPath}`);
+        } else {
+            console.log('PDF: font not found at expected path');
         }
 
         doc.pipe(res);
