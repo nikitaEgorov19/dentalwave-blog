@@ -235,12 +235,6 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         res.status(500).json({ error: 'PDF generation failed' });
     }
 });
-        doc.end();
-    } catch (err) {
-        console.error('PDF generation error:', err);
-        res.status(500).json({ error: 'PDF generation failed' });
-    }
-});
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.get('/article', (req, res) => res.sendFile(path.join(__dirname, 'public', 'article.html')));
