@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статья - DentalWave</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --gold: #d4af37;
+            --gold-dark: #996515;
+            --black: #0a0a0a;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-800: #343a40;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--black);
+            line-height: 1.8;
+            padding-top: 80px;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--black);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        header a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border: 2px solid var(--gold);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        header a:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--gray-800);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--gold-dark);
+        }
+        
+        .article {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid var(--gray-200);
+            position: relative;
+        }
+        
+        .article::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .category {
+            background: var(--black);
+            color: var(--gold);
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .article h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--black);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+        
+        .meta {
+            color: var(--gray-800);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .annotation {
+            background: linear-gradient(135deg, var(--gold-light), var(--white));
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--gold-dark);
+            font-style: italic;
+            color: var(--gray-800);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .annotation-title {
+            font-weight: 600;
+            color: var(--black);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-style: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+        
+        .content {
+            font-size: 1.1rem;
+            color: var(--black);
+            text-align: justify;
+            line-height: 1.9;
+        }
+        
+        .content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--gray-200);
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-back {
+            background: var(--gray-200);
+            color: var(--black);
+        }
+        
+        .btn-back:hover {
+            background: var(--gray-800);
+            color: var(--white);
+        }
+        
+        .btn-pdf {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            margin-left: auto;
+        }
+        
+        .btn-pdf:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .article { padding: 1.5rem; }
+            .article h1 { font-size: 2rem; }
+            .article-actions { flex-direction: column; }
+            .btn-pdf { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DentalWave</h1>
+        <a href="/">На главную</a>
+    </header>
+    
+    <div class="container">
+        <a href="/" class="back-link">← Назад к ленте публикаций</a>
+        <div id="article" class="loading">Загрузка...</div>
+    </div>
+
+    <script>
+        let categories = [];
+        let BASE_URL = '';
+        
+        async function initConfig() {
+            try {
+                const res = await fetch('/api/config');
+                const data = await res.json();
+                BASE_URL = data.baseUrl || '';
+            } catch (e) { BASE_URL = ''; }
+        }
+        
+        async function loadCategories() {
+            categories = await fetch('/api/categories').then(r => r.json());
+        }
+        
+        async function loadArticle() {
+            const id = new URLSearchParams(window.location.search).get('id');
+            if (!id) {
+                document.getElementById('article').innerHTML = 'Статья не найдена';
+                return;
+            }
+            
+            try {
+                const article = await fetch('/api/articles/' + id).then(r => r.json());
+                
+                // Get category names (handle both single and multiple)
+                let categoriesHtml = '';
+                if (article.categories && Array.isArray(article.categories)) {
+                    categoriesHtml = article.categories.map(catId => {
+                        const cat = categories.find(c => c.id == catId) || {name:'Разное'};
+                        return `<span class="category">${cat.name}</span>`;
+                    }).join('');
+                } else if (article.categoryId) {
+                    const cat = categories.find(c => c.id == article.categoryId) || {name:'Разное'};
+                    categoriesHtml = `<span class="category">${cat.name}</span>`;
+                }
+                
+                let annotationHtml = '';
+                if (article.annotation) {
+                    annotationHtml = `<div class="annotation">
+                        <span class="annotation-title">Аннотация:</span>
+                        ${article.annotation}
+                    </div>`;
+                }
+                
+                document.getElementById('article').innerHTML = `
+                    <div class="article">
+                        ${categoriesHtml}
+                        <h1>${article.title}</h1>
+                        <div class="meta">
+                            <span>👤 ${article.author}</span>
+                            <span>📅 ${article.date}</span>
+                        </div>
+                        ${annotationHtml}
+                        <div class="content">${article.content}</div>
+                        <div class="article-actions">
+                            <a href="/" class="btn btn-back">← Назад</a>
+                            <a href="${BASE_URL}/api/articles/${article.id}/pdf" class="btn btn-pdf" target="_blank">📄 Скачать PDF</a>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                document.getElementById('article').innerHTML = 'Статья не найдена';
+            }
+        }
+        
+        window.addEventListener('load', async () => {
+            await initConfig();
+            await loadCategories();
+            await loadArticle();
+        });
+    </script>
+</body>
+</html>

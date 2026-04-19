@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DentalWave - Ведущий стоматологический журнал</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --gold: #d4af37;
+            --gold-light: #f4e5b2;
+            --gold-dark: #996515;
+            --black: #0a0a0a;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-800: #343a40;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Sticky Tabs Navigation */
+        .nav-tabs {
+            position: sticky;
+            top: 0;
+            background: var(--black);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.95);
+        }
+        
+        .nav-tab {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .nav-tab:hover {
+            color: var(--black);
+            transform: translateY(-2px);
+            border-color: var(--gold);
+        }
+        
+        .nav-tab:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-tab.active {
+            color: var(--black);
+            border-color: var(--gold);
+            font-weight: 600;
+        }
+        
+        .nav-tab.active::before {
+            opacity: 1;
+        }
+        
+        /* Sections */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--black);
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            margin: 1.5rem auto 0;
+            border-radius: 2px;
+        }
+        
+        /* Main Section */
+        #main {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 5rem;
+            align-items: center;
+            padding: 4rem 2rem;
+        }
+        
+        .main-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .main-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--black);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+        
+        .main-content .subtitle {
+            font-size: 1.4rem;
+            color: var(--gold-dark);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .main-content .description {
+            color: var(--gray-800);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+        
+        .main-stats {
+            display: flex;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--gray-800);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        
+        /* Stats in main section - override colors if needed */
+        #main .stat-number {
+            color: var(--gold);
+        }
+        
+        .main-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-img {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border: 4px solid var(--gold);
+        }
+        
+        .main-img {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border: 4px solid var(--gold);
+        }
+        
+        /* Feed Section */
+        #feed {
+            background: var(--gray-100);
+            padding: 5rem 2rem;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .article-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .article-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .article-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            border-color: var(--gold);
+        }
+        
+        .article-card .category {
+            background: var(--black);
+            color: var(--gold);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .article-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--black);
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+        
+        .article-card .meta {
+            color: var(--gray-800);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .article-card .meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .article-card .annotation-label {
+            font-weight: 600;
+            color: var(--gold-dark);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .article-card .annotation {
+            color: var(--gray-800);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        .article-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray-800);
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+        
+        /* Category filter buttons */
+        .category-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            color: var(--black);
+        }
+        
+        .category-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+        }
+        
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border-color: var(--gold);
+            font-weight: 600;
+        }
+        
+        /* Article views */
+        .article-card .views {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--gray-800);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-read {
+            background: var(--black);
+            color: var(--white);
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .btn-read:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: translateY(-2px);
+        }
+        
+        .btn-pdf {
+            background: var(--gold);
+            color: var(--black);
+            padding: 0.8rem 1.2rem;
+        }
+        
+        .btn-pdf:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        
+        /* Application Section */
+        #application {
+            background: var(--white);
+        }
+        
+        .criteria-box {
+            background: var(--black);
+            color: var(--white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            margin-bottom: 3rem;
+            border: 1px solid var(--gold);
+        }
+        
+        .criteria-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+        }
+        
+        .criteria-list {
+            list-style: none;
+            counter-reset: criteria;
+        }
+        
+        .criteria-list li {
+            counter-increment: criteria;
+            padding: 1rem 0 1rem 2.5rem;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.05rem;
+        }
+        
+        .criteria-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .criteria-list li::before {
+            content: counter(criteria);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: var(--gold);
+            color: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .application-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .application-form-container.show {
+            display: block;
+        }
+        
+        .application-form {
+            background: var(--gray-100);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 2px solid var(--gold);
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--black);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: var(--white);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .required::after {
+            content: ' *';
+            color: #e74c3c;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+        
+        .apply-btn-toggle {
+            display: block;
+            width: 300px;
+            margin: 2rem auto 0;
+            padding: 1.2rem 2.5rem;
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .apply-btn-toggle:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+        
+        .close-form-btn {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            width: 32px;
+            height: 32px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+        
+        .close-form-btn:hover {
+            transform: scale(1.15);
+        }
+        
+        .application-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .application-form-container.show {
+            display: block;
+        }
+        
+        /* Category filter buttons */
+        .category-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            color: var(--black);
+        }
+        
+        .category-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+        }
+        
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border-color: var(--gold);
+            font-weight: 600;
+        }
+        
+        /* Article views */
+        .article-card .views {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--gray-800);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Category filter buttons */
+        .category-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            color: var(--black);
+        }
+        
+        .category-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+        }
+        
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border-color: var(--gold);
+            font-weight: 600;
+        }
+        
+        .application-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .application-form-container.show {
+            display: block;
+        }
+        
+        .apply-btn-toggle:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+        
+        .close-form-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            border-radius: 50%;
+            font-size: 28px;
+            line-height: 34px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .close-form-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        .close-form-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* About Section */
+        #about {
+            background: var(--gray-100);
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--gray-800);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .contact-box {
+            background: var(--black);
+            color: var(--white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            height: fit-content;
+            border: 1px solid var(--gold);
+        }
+        
+        .contact-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--gold);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            color: var(--black);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .social-link:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            border-top: 3px solid var(--gold);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            #main {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 2rem 1rem;
+            }
+            
+            .main-content h1 { font-size: 2.5rem; }
+            .main-stats { justify-content: center; }
+            .nav-tabs { flex-wrap: wrap; padding: 0.8rem 1rem; }
+            .nav-tab { padding: 0.6rem 1rem; font-size: 0.85rem; }
+            .about-content { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .section-title { font-size: 2.5rem; }
+            .book-container { width: 200px; height: 280px; font-size: 1.8rem; }
+            .tooth-container { margin-left: 130px; width: 80px; height: 80px; font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header style="position: sticky; top: 0; z-index: 1000; background: var(--black); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+        <!-- Search (Left) -->
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <input type="text" id="globalSearch" placeholder="🔍 Поиск статей..." style="padding: 0.7rem 1rem; border: 2px solid var(--gold); border-radius: 6px; font-size: 0.9rem; width: 200px; background: var(--white); color: var(--black); transition: width 0.3s;" onfocus="this.style.width='300px'" onblur="this.style.width='200px'">
+        </div>
+        
+        <!-- Tabs (Center) -->
+        <nav style="display: flex; gap: 0.5rem;">
+            <a href="#main" class="nav-tab active">Главная</a>
+            <a href="#feed" class="nav-tab">Лента публикаций</a>
+            <a href="#application" class="nav-tab">Заявка</a>
+            <a href="#about" class="nav-tab">О журнале</a>
+        </nav>
+        
+        <!-- Admin (Right) -->
+        <div>
+            <a href="/admin" target="_blank" style="color: var(--white); text-decoration: none; padding: 0.7rem 1.2rem; background: var(--gold); border-radius: 6px; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='var(--gold-dark)'" onmouseout="this.style.background='var(--gold)'">
+                👤 Admin
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <section id="main" class="section">
+        <div class="main-content">
+            <h1>DentalWave</h1>
+            <div class="subtitle">Ведущий стоматологический журнал</div>
+            <p class="description">Профессиональный ресурс для стоматологов, содержащий актуальные исследования, обзоры и новости мирового уровня. Мы объединяем экспертов и предоставляем только проверенную информацию.</p>
+            
+            <div class="main-stats" id="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="articlesCount">—</span>
+                    <span class="stat-label">Статей</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="authorsCount">—</span>
+                    <span class="stat-label">Авторов</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="dailyViews">—</span>
+                    <span class="stat-label">Просмотров ежедневно</span>
+                </div>
+            </div>
+        </div>
+        <div class="main-visual">
+            <img src="/1.jpg" alt="DentalWave" class="main-img" onerror="this.style.display='none'; document.getElementById('bookFallback').style.display='flex';">
+            <div class="book-container" id="bookFallback" style="display:none;">DentalWave</div>
+        </div>
+    </section>
+
+    <!-- Feed Section -->
+    <section id="feed" class="section">
+        <h2 class="section-title">Лента публикаций</h2>
+        
+        <!-- Category Filter - Horizontal Buttons -->
+        <div style="margin-bottom: 2rem;">
+            <div id="categoryButtons" style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;">
+                <button class="category-btn active" data-category="all">Все</button>
+            </div>
+        </div>
+        
+        <div class="articles-grid" id="articlesGrid"></div>
+    </section>
+
+    <!-- Application Section -->
+    <section id="application" class="section">
+        <h2 class="section-title">Заявка на публикацию</h2>
+        
+        <div class="criteria-box">
+            <h3>Требования к статьям:</h3>
+            <ul class="criteria-list">
+                <li>---------</li>
+                <li>---------</li>
+                <li>---------</li>
+                <li>---------</li>
+                <li>---------</li>
+            </ul>
+        </div>
+
+        <button class="apply-btn-toggle" id="showFormBtn">📝 Подать заявку</button>
+
+        <div class="application-form-container" id="applicationContainer">
+            <button class="close-form-btn" id="closeFormBtn" title="Закрыть форму">×</button>
+            <form class="application-form" id="applicationForm">
+                <div class="form-group">
+                    <label class="required">ФИО</label>
+                    <input type="text" class="form-control" name="fio" required placeholder="Иванов Ива Иванович">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Контактный телефон</label>
+                        <input type="tel" class="form-control" name="phone" required placeholder="+7 (999) 000-00-00">
+                    </div>
+                    <div class="form-group">
+                        <label>Регион</label>
+                        <select class="form-control" name="region">
+                            <option value="">Выберите регион</option>
+                            <option value="moscow">Москва</option>
+                            <option value="spb">Санкт-Петербург</option>
+                            <option value="krasnodar">Краснодарский край</option>
+                            <option value="sverdlovsk">Свердловская область</option>
+                            <option value="rostov">Ростовская область</option>
+                            <option value="other">Другой</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ссылка на социальную сеть для связи</label>
+                    <input type="url" class="form-control" name="social" placeholder="https://vk.com/username">
+                </div>
+                <div class="form-group">
+                    <label class="required">Тема предлагаемой статьи</label>
+                    <input type="text" class="form-control" name="topic" required>
+                </div>
+                <div class="form-group">
+                    <label class="required">Краткий текст статьи (пожелания)</label>
+                    <textarea class="form-control" name="text" rows="6" required placeholder="Опишите основную идею статьи, цели и методологию..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Отправить заявку</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- About Journal Section -->
+    <section id="about" class="section">
+        <h2 class="section-title">О журнале</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>---------</p>
+            </div>
+            <div class="contact-box">
+                <h3>Контакты</h3>
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <span>+7 (495) 123-45-67</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">✉️</span>
+                    <span>info@dental-journal.ru</span>
+                </div>
+                <div class="social-links">
+                    <a href="https://t.me/dentaljournal" class="social-link" title="Telegram">TG</a>
+                    <a href="https://vk.com/dentaljournal" class="social-link" title="VK">VK</a>
+                    <a href="mailto:info@dental-journal.ru" class="social-link" title="Email">@</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 DentalWave. Все права защищены.</p>
+    </footer>
+
+    <script>
+        // Global state
+        let allArticles = [];
+        let categories = [];
+        let BASE_URL = '';
+        let currentCategoryFilter = 'all';
+        let currentSearchQuery = '';
+
+        // Initialize configuration
+        async function initConfig() {
+            try {
+                const res = await fetch('/api/config');
+                const data = await res.json();
+                BASE_URL = data.baseUrl || '';
+                document.body.dataset.baseUrl = BASE_URL;
+            } catch (e) { BASE_URL = ''; }
+        }
+
+        // Load articles and categories
+        async function initData() {
+            allArticles = await fetch('/api/articles').then(r => r.json());
+            categories = await fetch('/api/categories').then(r => r.json());
+            
+            // Build category buttons
+            const container = document.getElementById('categoryButtons');
+            container.innerHTML = '';
+            
+            // "All" button
+            const allBtn = document.createElement('button');
+            allBtn.className = 'category-btn active';
+            allBtn.setAttribute('data-category', 'all');
+            allBtn.textContent = 'Все';
+            allBtn.addEventListener('click', () => setCategoryFilter('all'));
+            container.appendChild(allBtn);
+            
+            // Category buttons
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn';
+                btn.setAttribute('data-category', cat.id);
+                btn.textContent = cat.name;
+                btn.addEventListener('click', () => setCategoryFilter(cat.id));
+                container.appendChild(btn);
+            });
+            
+            applyFiltersAndRender();
+        }
+
+        function setCategoryFilter(catId) {
+            currentCategoryFilter = catId;
+            
+            // Update button states
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-category') == catId);
+            });
+            
+            applyFiltersAndRender();
+        }
+
+        function getFilteredArticles() {
+            let filtered = allArticles;
+            
+            // Category filter
+            if (currentCategoryFilter !== 'all') {
+                filtered = filtered.filter(a => 
+                    a.categoryId == currentCategoryFilter || 
+                    (a.categories && a.categories.includes(parseInt(currentCategoryFilter)))
+                );
+            }
+            
+            // Global search (title OR author only)
+            if (currentSearchQuery) {
+                const q = currentSearchQuery.toLowerCase();
+                filtered = filtered.filter(a => 
+                    a.title.toLowerCase().includes(q) ||
+                    a.author.toLowerCase().includes(q)
+                );
+            }
+            
+            return filtered;
+        }
+
+        function applyFiltersAndRender() {
+            const filtered = getFilteredArticles();
+            renderArticlesGrid(filtered);
+            updateStats(filtered);
+        }
+
+        // Render article cards with views
+        function renderArticlesGrid(articlesToRender) {
+            const grid = document.getElementById('articlesGrid');
+            
+            if (articlesToRender.length === 0) {
+                grid.innerHTML = '<div class="empty">Статей не найдено</div>';
+                return;
+            }
+            
+            grid.innerHTML = articlesToRender.map(article => {
+                // Get category names
+                let catNames = '';
+                if (article.categories && Array.isArray(article.categories)) {
+                    catNames = article.categories.map(cid => {
+                        const cat = categories.find(c => c.id == cid) || {name:'Разное'};
+                        return cat.name;
+                    }).join(', ');
+                } else {
+                    const cat = categories.find(c => c.id == article.categoryId) || {name:'Разное'};
+                    catNames = cat.name;
+                }
+                
+                const views = article.views || 0;
+                
+                return `
+                <div class="article-card">
+                    <span class="category">${catNames}</span>
+                    <h3>${article.title}</h3>
+                    <div class="views">👁 ${views.toLocaleString()}</div>
+                    <div class="meta">
+                        <span>👤 ${article.author}</span>
+                        <span>📅 ${article.date}</span>
+                    </div>
+                    ${article.annotation ? `<span class="annotation-label">Аннотация:</span><div class="annotation">${article.annotation}</div>` : ''}
+                    <div class="article-actions">
+                        <a href="${BASE_URL}/article?id=${article.id}" class="btn btn-read" target="_blank">📖 Читать</a>
+                        <a href="${BASE_URL}/api/articles/${article.id}/pdf" class="btn btn-pdf" target="_blank">📄 PDF</a>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // Statistics with real views
+        function updateStats(articles) {
+            const uniqueAuthors = new Set(articles.map(a => a.author).filter(Boolean)).size;
+            const totalViews = articles.reduce((sum, a) => sum + (a.views || 0), 0);
+            
+            document.getElementById('articlesCount').textContent = articles.length;
+            document.getElementById('authorsCount').textContent = uniqueAuthors;
+            document.getElementById('dailyViews').textContent = totalViews.toLocaleString();
+        }
+
+        // Navigation active state
+        const sections = document.querySelectorAll('section');
+        const navTabs = document.querySelectorAll('.nav-tab');
+
+        function updateActiveTab() {
+            let current = '';
+            sections.forEach(section => {
+                const top = section.offsetTop - 80;
+                if (window.scrollY >= top) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('href') === `#${current}`) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', updateActiveTab);
+        
+        // Category filter
+        document.getElementById('categoryButtons').addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-btn')) {
+                const catId = e.target.getAttribute('data-category');
+                setCategoryFilter(catId);
+            }
+        });
+
+        // Global search - redirects to feed section and filters
+        document.getElementById('globalSearch').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                currentSearchQuery = e.target.value.toLowerCase().trim();
+                // Scroll to feed section
+                document.getElementById('feed').scrollIntoView({ behavior: 'smooth' });
+                applyFiltersAndRender();
+            }
+        });
+
+        document.getElementById('globalSearch').addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value.toLowerCase().trim();
+            // Optionally also update feed in real-time (uncomment):
+            // applyFiltersAndRender();
+        });
+
+        // Form toggle
+        const showFormBtn = document.getElementById('showFormBtn');
+        const closeFormBtn = document.getElementById('closeFormBtn');
+        const formContainer = document.getElementById('applicationContainer');
+        const form = document.getElementById('applicationForm');
+
+        showFormBtn.addEventListener('click', () => {
+            formContainer.classList.add('show');
+            showFormBtn.style.display = 'none';
+        });
+
+        closeFormBtn.addEventListener('click', () => {
+            formContainer.classList.remove('show');
+            showFormBtn.style.display = 'block';
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+            e.target.reset();
+            formContainer.classList.remove('show');
+            showFormBtn.style.display = 'block';
+        });
+
+        // Initialize
+        window.addEventListener('load', async () => {
+            await initConfig();
+            await initData();
+            updateActiveTab();
+        });
+    </script>
+</body>
+</html>

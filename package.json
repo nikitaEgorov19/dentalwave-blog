@@ -1,0 +1,14 @@
+{
+  "name": "blog-site",
+  "version": "1.0.0",
+  "description": "Site with articles and admin panel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pdfkit": "^0.14.0",
+    "xlsx": "^0.18.5"
+  }
+}

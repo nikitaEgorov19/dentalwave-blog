@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - DENTAL journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --gold: #d4af37;
+            --gold-dark: #996515;
+            --black: #0a0a0a;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --danger: #e74c3c;
+            --success: #27ae60;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--black);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: var(--black);
+            color: var(--white);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        header a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border: 2px solid var(--gold);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        header a:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .search-section {
+            margin-bottom: 2rem;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 1.1rem 1.5rem;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: var(--white);
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--gold-dark);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+        
+        .form-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .form-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--black);
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+        
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-edit {
+            background: var(--gold);
+            color: var(--black);
+            padding: 0.6rem 1.2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .btn-edit:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+        
+        .btn-delete {
+            background: var(--danger);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+        }
+        
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+        
+        .btn-cancel {
+            background: var(--gray-200);
+            color: var(--black);
+            margin-left: 0.5rem;
+        }
+        
+        .btn-cancel:hover {
+            background: var(--gray-800);
+            color: var(--white);
+        }
+        
+        .category-tag {
+            display: inline-block;
+            background: var(--black);
+            color: var(--gold);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        thead {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: background 0.2s;
+        }
+        
+        tbody tr:hover {
+            background: var(--gray-100);
+        }
+        
+        td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+        
+        .actions-cell {
+            white-space: nowrap;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray-800);
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .form-section { padding: 1.5rem; }
+            .articles-table { display: block; overflow-x: auto; }
+            .btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DENTAL journal — Админ</h1>
+        <a href="/">На сайт</a>
+    </header>
+    
+        <div class="container">
+            <!-- Header with Admin & Search -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div class="search-section" style="flex: 1; max-width: 500px;">
+                    <input type="text" id="searchInput" class="search-box" placeholder="🔍 Поиск статейпо названию, автору или содержанию...">
+                </div>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <a href="/" target="_blank" class="btn btn-primary" style="text-decoration: none;">🌐 На сайт</a>
+                </div>
+            </div>
+        
+        <!-- Category Management -->
+        <div class="form-section">
+            <h2>Управление разделами</h2>
+            <div style="display: flex; gap: 0.8rem; margin-bottom: 1.5rem;">
+                <input type="text" id="newCategory" class="form-control" placeholder="Название нового раздела" style="flex: 1;">
+                <button class="btn btn-primary" onclick="addCategory()">+ Добавить</button>
+            </div>
+            <div id="categoriesList" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+        </div>
+        
+        <!-- Add/Edit Article Form -->
+        <div class="form-section">
+            <h2 id="formTitle">Добавить статью</h2>
+            <form id="articleForm">
+                <input type="hidden" id="articleId">
+                <div class="form-group">
+                    <label>Заголовок</label>
+                    <input type="text" id="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Автор</label>
+                    <input type="text" id="author" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Разделы</label>
+                    <div id="categoriesCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Содержание</label>
+                    <textarea id="content" class="form-control" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Аннотация</label>
+                    <textarea id="annotation" class="form-control" rows="3" placeholder="Краткое описание статьи (отображается в карточке)"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Добавить статью</button>
+                <button type="button" class="btn btn-cancel" id="cancelBtn" style="display: none;">Отмена</button>
+            </form>
+        </div>
+        
+        <!-- Articles Table -->
+        <div class="form-section">
+            <h2>Список статей</h2>
+            <div class="articles-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Заголовок</th>
+                            <th>Раздел</th>
+                            <th>Автор</th>
+                            <th>Дата</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articlesTable"></tbody>
+                </table>
+                <div id="emptyState" class="empty-state" style="display: none;">Статей не найдено</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isEditMode = false;
+        let BASE_URL = '';
+        let categories = [];
+        let allArticles = [];
+        let adminAuth = '';
+        
+        // Initialize
+        async function init() {
+            await getConfig();
+            adminAuth = askAuth();
+            if (!adminAuth) return;
+            const valid = await verifyAuth(adminAuth);
+            if (!valid) {
+                alert('Неверный логин или пароль');
+                window.location.href = '/';
+                return;
+            }
+            await loadCategories();
+            await loadArticles();
+            
+            // Setup search
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+        }
+        
+        async function getConfig() {
+            try {
+                const res = await fetch('/api/config');
+                const data = await res.json();
+                BASE_URL = data.baseUrl;
+            } catch (e) { BASE_URL = ''; }
+        }
+        
+        function askAuth() {
+            const user = prompt('Логин:');
+            if (!user) { window.location.href = '/'; return null; }
+            const pass = prompt('Пароль:');
+            if (!pass) { window.location.href = '/'; return null; }
+            return btoa(user + ':' + pass);
+        }
+        
+        async function verifyAuth(auth) {
+            const res = await fetch('/api/verify', { 
+                method: 'POST',
+                headers: { 'Authorization': 'Basic ' + auth } 
+            });
+            return res.ok;
+        }
+        
+        // Search
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) {
+                renderArticlesTable(allArticles);
+                return;
+            }
+            const filtered = allArticles.filter(a => 
+                a.title.toLowerCase().includes(query) ||
+                a.author.toLowerCase().includes(query) ||
+                a.content.toLowerCase().includes(query) ||
+                (a.annotation && a.annotation.toLowerCase().includes(query))
+            );
+            renderArticlesTable(filtered);
+        }
+        
+        // Categories
+        async function loadCategories() {
+            try {
+                categories = await fetch('/api/categories').then(r => r.json());
+                
+                // Render checkboxes for form
+                const checkboxesContainer = document.getElementById('categoriesCheckboxes');
+                checkboxesContainer.innerHTML = categories.map(c => 
+                    `<label style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem;background:var(--gray-100);border-radius:6px;">
+                        <input type="checkbox" name="category" value="${c.id}" class="form-control" style="width:auto;margin:0;"> ${c.name}
+                    </label>`
+                ).join('');
+                
+                // Render category management list
+                document.getElementById('categoriesList').innerHTML = categories.map(c => 
+                    `<span class="category-tag">${c.name} <button onclick="deleteCategory(${c.id})" style="background:none;border:none;color:var(--danger);cursor:pointer;margin-left:0.3rem;font-size:1.2rem;">&times;</button></span>`
+                ).join('');
+            } catch (e) { console.error(e); }
+        }
+        
+        async function addCategory() {
+            const name = document.getElementById('newCategory').value.trim();
+            if (!name || !adminAuth) return;
+            await fetch('/api/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + adminAuth },
+                body: JSON.stringify({ name })
+            });
+            document.getElementById('newCategory').value = '';
+            loadCategories();
+        }
+        
+        async function deleteCategory(id) {
+            if (!adminAuth || !confirm('Удалить раздел?')) return;
+            await fetch('/api/categories/' + id, { method: 'DELETE', headers: { 'Authorization': 'Basic ' + adminAuth } });
+            loadCategories();
+        }
+        
+        // Articles
+        async function loadArticles() {
+            try {
+                allArticles = await fetch('/api/articles').then(r => r.json());
+                renderArticlesTable(allArticles);
+            } catch (error) { console.error('Error:', error); }
+        }
+        
+        function renderArticlesTable(articlesToRender) {
+            const tbody = document.getElementById('articlesTable');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (articlesToRender.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            tbody.innerHTML = articlesToRender.map(article => {
+                // Handle both old single categoryId and new categories array
+                let catNames = '';
+                if (article.categories && Array.isArray(article.categories)) {
+                    catNames = article.categories.map(catId => {
+                        const cat = categories.find(c => c.id == catId) || {name:'Разное'};
+                        return cat.name;
+                    }).join(', ');
+                } else if (article.categoryId) {
+                    const cat = categories.find(c => c.id == article.categoryId) || {name:'Разное'};
+                    catNames = cat.name;
+                } else {
+                    catNames = 'Разное';
+                }
+                
+                return `
+                    <tr>
+                        <td>${article.id}</td>
+                        <td>${article.title}</td>
+                        <td><span class="category-tag">${catNames}</span></td>
+                        <td>${article.author}</td>
+                        <td>${article.date}</td>
+                        <td class="actions-cell">
+                            <button class="btn btn-edit" onclick="editArticle(${article.id}, '${escapeQuote(article.title)}', '${escapeQuote(article.author)}', '${escapeQuote(article.content)}', [${(article.categories || (article.categoryId ? [article.categoryId] : [])).join(',')}], '${escapeQuote(article.annotation || '')}')">✏️ Редактировать</button>
+                            <button class="btn btn-delete" onclick="deleteArticle(${article.id})">🗑️ Удалить</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function escapeQuote(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+        
+        // Form
+        document.getElementById('articleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!adminAuth) { alert('Сессия истекла, обновите страницу'); return; }
+            const id = document.getElementById('articleId').value;
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const content = document.getElementById('content').value;
+            const annotation = document.getElementById('annotation').value;
+            
+            // Get selected category checkboxes
+            const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => parseInt(cb.value));
+            
+            const data = { 
+                title, 
+                author, 
+                content, 
+                annotation,
+                categories: checkedCategories
+            };
+            
+            try {
+                if (isEditMode) {
+                    await fetch(`/api/articles/${id}`, { 
+                        method: 'PUT', 
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + adminAuth }, 
+                        body: JSON.stringify(data) 
+                    });
+                } else {
+                    await fetch('/api/articles', { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + adminAuth }, 
+                        body: JSON.stringify(data) 
+                    });
+                }
+                resetForm(); loadArticles();
+            } catch (error) { console.error('Error:', error); }
+        });
+        
+        function editArticle(id, title, author, content, categoriesArr, annotation) {
+            isEditMode = true;
+            document.getElementById('articleId').value = id;
+            document.getElementById('title').value = title;
+            document.getElementById('author').value = author;
+            document.getElementById('content').value = content.replace(/\\n/g, '\n');
+            document.getElementById('annotation').value = annotation || '';
+            
+            // Set checked categories
+            const checkboxes = document.querySelectorAll('input[name="category"]');
+            checkboxes.forEach(cb => {
+                cb.checked = (categoriesArr || []).includes(parseInt(cb.value));
+            });
+            
+            document.getElementById('formTitle').textContent = 'Редактировать статью';
+            document.getElementById('submitBtn').textContent = 'Сохранить изменения';
+            document.getElementById('cancelBtn').style.display = 'inline-block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        async function deleteArticle(id) { 
+            if (!adminAuth) { alert('Сессия истекла, обновите страницу'); return; }
+            if (confirm('🗑️ Удалить статью навсегда?')) { 
+                try { 
+                    await fetch(`/api/articles/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Basic ' + adminAuth } }); 
+                    loadArticles(); 
+                } catch (error) { console.error('Error:', error); } 
+            } 
+        }
+        
+        function resetForm() { 
+            isEditMode = false; 
+            document.getElementById('articleForm').reset(); 
+            document.getElementById('articleId').value = ''; 
+            document.getElementById('annotation').value = '';
+            // Uncheck all category checkboxes
+            document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = false);
+            document.getElementById('formTitle').textContent = 'Добавить статью';
+            document.getElementById('submitBtn').textContent = 'Добавить статью';
+            document.getElementById('cancelBtn').style.display = 'none';
+            loadCategories();
+        }
+        
+        document.getElementById('cancelBtn').addEventListener('click', resetForm);
+        
+        // Start
+        init();
+    </script>
+</body>
+</html>

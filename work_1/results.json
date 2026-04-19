@@ -1,0 +1,150 @@
+{
+  "best_store": "Ìàãàçèí 11",
+  "total_products": 1578,
+  "category_a_count": 521,
+  "worsened_turnover_count": 235,
+  "top5": [
+    {
+      "product": "Ìÿñî è ìÿñîïðîäóêòû 376",
+      "category": "Ìÿñî è ìÿñîïðîäóêòû",
+      "margin_sept": 3.01,
+      "turnover_aug": 1.185,
+      "turnover_sept": 3.737,
+      "profitability_3m_pct": 53.26
+    },
+    {
+      "product": "Ìÿñî è ìÿñîïðîäóêòû 254",
+      "category": "Ìÿñî è ìÿñîïðîäóêòû",
+      "margin_sept": 2.48,
+      "turnover_aug": 4,
+      "turnover_sept": 12,
+      "profitability_3m_pct": 51.79
+    },
+    {
+      "product": "Ìÿñî è ìÿñîïðîäóêòû 356",
+      "category": "Ìÿñî è ìÿñîïðîäóêòû",
+      "margin_sept": 2.92,
+      "turnover_aug": 3,
+      "turnover_sept": 9,
+      "profitability_3m_pct": 51.71
+    },
+    {
+      "product": "Ìÿñî è ìÿñîïðîäóêòû 212",
+      "category": "Ìÿñî è ìÿñîïðîäóêòû",
+      "margin_sept": 1.42,
+      "turnover_aug": 15,
+      "turnover_sept": 16,
+      "profitability_3m_pct": 51.71
+    },
+    {
+      "product": "Õëåá è õëåáîáóëî÷íûå èçä 26",
+      "category": "Õëåá è õëåáîáóëî÷íûå èçä",
+      "margin_sept": 27.7,
+      "turnover_aug": 6,
+      "turnover_sept": 20,
+      "profitability_3m_pct": 51.54
+    }
+  ],
+  "category_a_first_20": [
+    {
+      "product": "Õëåá è õëåáîáóëî÷íûå èçä 17",
+      "margin": 30.04,
+      "cumulative_pct": 1.11
+    },
+    {
+      "product": "Îâîùè è ôðóêòû 245",
+      "margin": 29.55,
+      "cumulative_pct": 2.2
+    },
+    {
+      "product": "Õëåá è õëåáîáóëî÷íûå èçä 26",
+      "margin": 27.7,
+      "cumulative_pct": 3.22
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 612",
+      "margin": 25.65,
+      "cumulative_pct": 4.16
+    },
+    {
+      "product": "Îâîùè è ôðóêòû 343",
+      "margin": 25.42,
+      "cumulative_pct": 5.1
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 278",
+      "margin": 24.03,
+      "cumulative_pct": 5.98
+    },
+    {
+      "product": "Îâîùè è ôðóêòû 16",
+      "margin": 21.21,
+      "cumulative_pct": 6.76
+    },
+    {
+      "product": "Îâîùè è ôðóêòû 259",
+      "margin": 20.71,
+      "cumulative_pct": 7.53
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 243",
+      "margin": 20.21,
+      "cumulative_pct": 8.27
+    },
+    {
+      "product": "Îâîùè è ôðóêòû 264",
+      "margin": 20.06,
+      "cumulative_pct": 9.01
+    },
+    {
+      "product": "Ìÿñî è ìÿñîïðîäóêòû 86",
+      "margin": 19.48,
+      "cumulative_pct": 9.73
+    },
+    {
+      "product": "Îâîùè è ôðóêòû 355",
+      "margin": 19.28,
+      "cumulative_pct": 10.44
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 236",
+      "margin": 18.77,
+      "cumulative_pct": 11.13
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 237",
+      "margin": 18.46,
+      "cumulative_pct": 11.81
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 269",
+      "margin": 18.45,
+      "cumulative_pct": 12.49
+    },
+    {
+      "product": "Îâîùè è ôðóêòû 322",
+      "margin": 16.69,
+      "cumulative_pct": 13.1
+    },
+    {
+      "product": "Ìÿñî è ìÿñîïðîäóêòû 416",
+      "margin": 16.65,
+      "cumulative_pct": 13.72
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 610",
+      "margin": 15.74,
+      "cumulative_pct": 14.3
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 288",
+      "margin": 15.35,
+      "cumulative_pct": 14.86
+    },
+    {
+      "product": "Ìîëî÷íûå ïðîäóêòû 589",
+      "margin": 14.05,
+      "cumulative_pct": 15.38
+    }
+  ]
+}
