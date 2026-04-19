@@ -47,7 +47,7 @@ if (!fs.existsSync(DATA_FILE)) {
     const defaultArticle = {
         id: Date.now(),
         title: 'ЗУБЫ Круто',
-        content: 'Ставят ли коронки на молочные зубы и что это дает...',
+        content: 'Ставят ли коронки на молочные зубы и что это дает\nФото зубов ребенка со множественным кариесом.Источник: shutterstock.com. Автор фото: Stanislaw Mikulski\nОсновная задача коронки на молочном зубе - сохранить его до того момента, как начнет прорезываться постоянный. Ее установка может потребоваться, если целостность зуба была нарушена или есть сомнения в его прочности. При этом коронка защищает зуб от повторного развития кариеса, сколов и любого дальнейшего разрушения. Она обладает высокой прочностью и устанавливается герметично на собственные ткани зуба.\n\nТак как коронка полностью повторяет, с анатомической точки зрения, натуральный зуб, она сохраняет нормальную функцию пережевывания пищи. Не страдает дикция и формируется правильный прикус. Получается, что молочный зуб в полной безопасности, а постоянный зуб, чей зачаток находятся под молочным, получает возможность правильно развиваться.\n\nУдалять установленную коронку на молочный зуб не нужно. Она выпадет вместе с молочным зубом при прорезывании постоянного. До этого момента она будет просто поддерживать работу зубочелюстной системы без вреда для здоровья. Коронки изготавливают из безопасных для детей материалов.\n\nЧем грозит отсутствие коронки на молочном зубе\nФото ребенка с молочными зубамиИсточник: shutterstock.com. Автор фото: riggleton\nЕсли зуб был разрушен, а коронка не устанавливалась, возможно неправильное или несвоевременное прорезывание постоянного зуба. Дело в том, что нормальная смена зубов возможна только при сохранении жевательной нагрузки. Коронка выполняет эту задачу на все 100%, эффективно распределяя нагрузку и включая в процесс корни молочного зуба. Со временем они рассосутся, и прорежется постоянный зуб.\n\nНередко без протезирования разрушенных зубов во рту происходят сдвиги зубного ряда в целом и отмечается неадекватное повышение нагрузки на соседние зубы. В свою очередь, удаление разрушающегося зуба потребует использования специальной ортодонтической распорки.',
         annotation: 'Краткое описание статьи о коронках на молочных зубах',
         author: 'Админ',
         categoryId: 1,
@@ -88,6 +88,7 @@ app.post('/api/categories', (req, res) => {
     };
     categories.push(newCategory);
     fs.writeFileSync(catFile, JSON.stringify(categories, null, 2));
+    console.log('Category added:', newCategory);
     res.json(newCategory);
 });
 
@@ -96,6 +97,7 @@ app.delete('/api/categories/:id', (req, res) => {
     let categories = fs.existsSync(catFile) ? JSON.parse(fs.readFileSync(catFile, 'utf-8')) : [];
     categories = categories.filter(c => c.id !== parseInt(req.params.id));
     fs.writeFileSync(catFile, JSON.stringify(categories, null, 2));
+    console.log('Category deleted:', req.params.id);
     res.json({ success: true });
 });
 
@@ -148,6 +150,7 @@ app.post('/api/articles', (req, res) => {
     };
     articles.push(newArticle);
     fs.writeFileSync(DATA_FILE, JSON.stringify(articles, null, 2));
+    console.log('Article created:', newArticle.title);
     res.json(newArticle);
 });
 
@@ -174,6 +177,7 @@ app.put('/api/articles/:id', (req, res) => {
             date: articles[index].date
         };
         fs.writeFileSync(DATA_FILE, JSON.stringify(articles, null, 2));
+        console.log('Article updated:', articles[index].title);
         res.json(articles[index]);
     } else {
         res.status(404).json({ error: 'Article not found' });
@@ -196,7 +200,7 @@ app.post('/api/verify', (req, res) => {
     const auth = req.headers.authorization || '';
     const credentials = Buffer.from(auth.replace('Basic ', ''), 'base64').toString();
     const [user, pass] = credentials.split(':');
-    console.log('Auth attempt:', { user, pass }); // Debug log
+    console.log('Auth attempt:', { user, pass });
     if (user === '123' && pass === '123') {
         res.json({ success: true });
     } else {
@@ -278,15 +282,15 @@ try {
         console.log(`Server running at http://localhost:${PORT}`);
         console.log(`Admin: http://localhost:${PORT}/admin`);
     });
-    
+
     server.on('listening', () => {
         console.log('Server is listening');
     });
-    
+
     server.on('error', (err) => {
         console.error('SERVER ERROR:', err.code, err.message);
     });
-    
+
 } catch (err) {
     console.error('LISTEN FAILED:', err);
     process.exit(1);
