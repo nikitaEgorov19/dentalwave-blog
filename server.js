@@ -77,6 +77,28 @@ app.get('/api/categories', (req, res) => {
     res.json(JSON.parse(fs.readFileSync(catFile, 'utf-8')));
 });
 
+// CRUD для категорий
+app.post('/api/categories', (req, res) => {
+    const catFile = path.join(__dirname, 'data', 'categories.json');
+    let categories = fs.existsSync(catFile) ? JSON.parse(fs.readFileSync(catFile, 'utf-8')) : [];
+    const newId = categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1;
+    const newCategory = {
+        id: newId,
+        name: req.body.name || 'Новый раздел'
+    };
+    categories.push(newCategory);
+    fs.writeFileSync(catFile, JSON.stringify(categories, null, 2));
+    res.json(newCategory);
+});
+
+app.delete('/api/categories/:id', (req, res) => {
+    const catFile = path.join(__dirname, 'data', 'categories.json');
+    let categories = fs.existsSync(catFile) ? JSON.parse(fs.readFileSync(catFile, 'utf-8')) : [];
+    categories = categories.filter(c => c.id !== parseInt(req.params.id));
+    fs.writeFileSync(catFile, JSON.stringify(categories, null, 2));
+    res.json({ success: true });
+});
+
 app.get('/api/articles', (req, res) => {
     if (!fs.existsSync(DATA_FILE)) return res.json([]);
     let articles = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
@@ -191,12 +213,32 @@ app.get('/api/articles/:id/pdf', (req, res) => {
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
-    const fonts = ['C:\\Windows\\Fonts\\arial.ttf', 'C:\\Windows\\Fonts\\times.ttf'];
-    for (const f of fonts) {
-        if (fs.existsSync(f)) {
-            doc.font(f);
-            break;
+    // Try multiple font paths for cross-platform compatibility
+    const fontPaths = [
+        'C:\\Windows\\Fonts\\arial.ttf',      // Windows
+        'C:\\Windows\\Fonts\\times.ttf',      // Windows fallback
+        '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',  // Linux (Railway)
+        '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',  // Linux fallback
+        '/System/Library/Fonts/Helvetica.ttc', // macOS
+    ];
+    
+    let fontLoaded = false;
+    for (const fontPath of fontPaths) {
+        if (fs.existsSync(fontPath)) {
+            try {
+                doc.font(fontPath);
+                fontLoaded = true;
+                console.log('Using font:', fontPath);
+                break;
+            } catch (e) {
+                continue;
+            }
         }
+    }
+    
+    // Fallback to default if no font found (Helvetica, may not support Cyrillic)
+    if (!fontLoaded) {
+        console.log('Warning: No Cyrillic font found, using default (may not display Cyrillic correctly)');
     }
 
     doc.pipe(res);
