@@ -24,3 +24,5 @@ EXPOSE 3000
 USER node
 
 CMD ["node", "server.js"]
+
+# Bump version to force rebuild
