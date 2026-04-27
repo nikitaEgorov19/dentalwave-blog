@@ -539,9 +539,10 @@
                 
                 // Status badge
                 let statusBadge = '';
-                if (article.status === 'published') {
+                const status = article.status || 'pending'; // default to pending if not set
+                if (status === 'published') {
                     statusBadge = '<span class="category-tag" style="background:var(--success);color:white;">Опубликована</span>';
-                } else if (article.status === 'rejected') {
+                } else if (status === 'rejected') {
                     statusBadge = '<span class="category-tag" style="background:var(--danger);color:white;">Отклонена</span>';
                 } else {
                     statusBadge = '<span class="category-tag" style="background:var(--warning);color:black;">На модерации</span>';
