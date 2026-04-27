@@ -442,6 +442,7 @@
         // Fullscreen toggle for textareas
         function toggleFullscreen(textareaId) {
             const textarea = document.getElementById(textareaId);
+            const container = textarea.parentElement;
             const isFullscreen = textarea.classList.contains('fullscreen');
             
             if (isFullscreen) {
@@ -454,6 +455,16 @@
                 textarea.style.height = '';
                 textarea.style.zIndex = '';
                 textarea.style.fontSize = '';
+                textarea.style.padding = '';
+                textarea.style.boxSizing = '';
+                
+                // Remove close button if exists
+                const closeButtons = document.querySelectorAll('.fullscreen-close');
+                closeButtons.forEach(button => {
+                    if (button && button.parentNode) {
+                        button.parentNode.removeChild(button);
+                    }
+                });
             } else {
                 // Enter fullscreen
                 textarea.classList.add('fullscreen');
@@ -466,6 +477,31 @@
                 textarea.style.fontSize = '1.2rem';
                 textarea.style.padding = '2rem';
                 textarea.style.boxSizing = 'border-box';
+                
+                // Add close button
+                const closeButton = document.createElement('button');
+                closeButton.className = 'fullscreen-close';
+                closeButton.innerHTML = '&times;';
+                closeButton.style.position = 'fixed';
+                closeButton.style.top = '20px';
+                closeButton.style.right = '20px';
+                closeButton.style.width = '40px';
+                closeButton.style.height = '40px';
+                closeButton.style.background = 'rgba(0,0,0,0.8)';
+                closeButton.style.color = 'white';
+                closeButton.style.border = 'none';
+                closeButton.style.borderRadius = '50%';
+                closeButton.style.fontSize = '24px';
+                closeButton.style.cursor = 'pointer';
+                closeButton.style.zIndex = '1001';
+                closeButton.style.display = 'flex';
+                closeButton.style.alignItems = 'center';
+                closeButton.style.justifyContent = 'center';
+                closeButton.onclick = () => toggleFullscreen(textareaId);
+                
+                // Add close button to body
+                document.body.appendChild(closeButton);
+                
                 textarea.focus();
             }
         }
@@ -579,16 +615,28 @@
             e.preventDefault();
             if (!adminAuth) { alert('Сессия истекла, обновите страницу'); return; }
             const id = document.getElementById('articleId').value;
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const authorEmail = document.getElementById('authorEmail').value;
-            const authorPhone = document.getElementById('authorPhone').value;
-            const authorSocial = document.getElementById('authorSocial').value;
-            const content = document.getElementById('content').value;
-            const annotation = document.getElementById('annotation').value;
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const authorEmail = document.getElementById('authorEmail').value.trim();
+            const authorPhone = document.getElementById('authorPhone').value.trim();
+            const authorSocial = document.getElementById('authorSocial').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const annotation = document.getElementById('annotation').value.trim();
+            
+            // Validation
+            if (!title) { alert('Введите заголовок статьи'); return; }
+            if (!author) { alert('Введите ФИО автора'); return; }
+            if (!authorEmail) { alert('Введите email автора'); return; }
+            // Simple email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(authorEmail)) { alert('Введите корректный email адрес'); return; }
+            if (!authorPhone) { alert('Введите телефон автора'); return; }
+            if (!authorSocial) { alert('Введите ссылку на социальную сеть'); return; }
+            if (!content) { alert('Введите содержание статьи'); return; }
             
             // Get selected category checkboxes
             const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => parseInt(cb.value));
+            if (checkedCategories.length === 0) { alert('Выберите хотя бы один раздел'); return; }
             
             const data = { 
                 title, 
@@ -616,7 +664,7 @@
                     });
                 }
                 resetForm(); loadArticles();
-            } catch (error) { console.error('Error:', error); }
+            } catch (error) { console.error('Error:', error); alert('Ошибка при сохранении статьи'); }
         });
         
         function editArticle(id, title, author, authorEmail, authorPhone, authorSocial, content, categoriesArr, annotation) {
