@@ -265,6 +265,20 @@
             white-space: nowrap;
         }
         
+        @media (max-width: 768px) {
+            .actions-cell {
+                white-space: normal;
+            }
+            .actions-cell .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .actions-cell .btn:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
         .empty-state {
             text-align: center;
             padding: 3rem;
