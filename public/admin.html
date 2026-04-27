@@ -356,16 +356,17 @@
             <h2>Список статей</h2>
             <div class="articles-table">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Заголовок</th>
-                            <th>Раздел</th>
-                            <th>Автор</th>
-                            <th>Дата</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
+<thead>
+<tr>
+<th>ID</th>
+<th>Заголовок</th>
+<th>Раздел</th>
+<th>Автор</th>
+<th>Дата</th>
+<th>Статус</th>
+<th>Действия</th>
+</tr>
+</thead>
                     <tbody id="articlesTable"></tbody>
                 </table>
                 <div id="emptyState" class="empty-state" style="display: none;">Статей не найдено</div>
@@ -581,8 +582,8 @@
             const title = document.getElementById('title').value;
             const author = document.getElementById('author').value;
             const authorEmail = document.getElementById('authorEmail').value;
-            const authorTelegram = document.getElementById('authorTelegram').value;
-            const authorVk = document.getElementById('authorVk').value;
+            const authorPhone = document.getElementById('authorPhone').value;
+            const authorSocial = document.getElementById('authorSocial').value;
             const content = document.getElementById('content').value;
             const annotation = document.getElementById('annotation').value;
             
@@ -593,8 +594,8 @@
                 title, 
                 author,
                 authorEmail,
-                authorTelegram,
-                authorVk,
+                authorPhone,
+                authorSocial,
                 content, 
                 annotation,
                 categories: checkedCategories
