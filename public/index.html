@@ -906,11 +906,11 @@
         <div class="criteria-box">
             <h3>Требования к статьям:</h3>
             <ul class="criteria-list">
-                <li>---------</li>
-                <li>---------</li>
-                <li>---------</li>
-                <li>---------</li>
-                <li>---------</li>
+                <li>Формат А4, книжная ориентация, поля по 20 мм. Шрифт Times New Roman, 14 кегль, межстрочный интервал 1.5, абзацный отступ 1.25 см, выравнивание по ширине, переносы слов отключены.</li>
+                <li>Данные об авторах: полностью ФИО, степень/звание, место работы, город. Для студентов — «студент» или «магистрант», для аспирантов — «аспирант».</li>
+                <li>Заголовок статьи — заглавными буквами на русском. После пустой строки — аннотация (не более 6 строк) и ключевые слова (не более 6 слов/словосочетаний).</li>
+                <li>Основной текст: печатается сплошным блоком с выравниванием по ширине. Сноски не допускаются. Ссылки на литературу в квадратных скобках: [1], [2, c.115] или [1, 2].</li>
+                <li>Список литературы: после текста с пустой строки. Заголовок «Список литературы:», затем нумерованный список вручную. Номер источника соответствует номеру ссылки в тексте.</li>
             </ul>
         </div>
 
@@ -920,33 +920,37 @@
             <button class="close-form-btn" id="closeFormBtn" title="Закрыть форму">×</button>
             <form class="application-form" id="applicationForm">
                 <div class="form-group">
-                    <label class="required">Заголовок статьи</label>
-                    <input type="text" class="form-control" id="title" required placeholder="Введите заголовок статьи">
+                    <label class="required">ФИО</label>
+                    <input type="text" class="form-control" id="fio" required placeholder="Иванов Иван Иванович">
                 </div>
                 <div class="form-group">
-                    <label class="required">ФИО автора</label>
-                    <input type="text" class="form-control" id="author" required placeholder="Иванов Иван Иванович">
+                    <label class="required">Телефон</label>
+                    <input type="tel" class="form-control" id="phone" required placeholder="+7 (999) 000-00-00">
                 </div>
                 <div class="form-group">
-                    <label class="required">Email автора (для уведомлений)</label>
-                    <input type="email" class="form-control" id="authorEmail" required placeholder="example@mail.ru">
+                    <label class="required">Ссылка на социальную сеть</label>
+                    <input type="url" class="form-control" id="socialLink" required placeholder="https://vk.com/username или https://t.me/username">
                 </div>
                 <div class="form-group">
-                    <label>Разделы</label>
-                    <div id="applicationCategoriesCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;"></div>
+                    <label class="required">Email</label>
+                    <input type="email" class="form-control" id="email" required placeholder="example@mail.ru">
                 </div>
                 <div class="form-group">
-                    <label class="required">Содержание статьи</label>
+                    <label class="required">Тема статьи</label>
+                    <input type="text" class="form-control" id="topic" required placeholder="Тема предлагаемой статьи">
+                </div>
+                <div class="form-group">
+                    <label class="required">Текст статьи</label>
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
-                        <textarea id="applicationContent" class="form-control" required style="flex: 1; min-height: 200px;"></textarea>
-                        <button type="button" class="btn btn-primary" onclick="toggleFullscreen('applicationContent')" style="height: fit-content;">Полноэкранный режим</button>
+                        <textarea id="articleText" class="form-control" required style="flex: 1; min-height: 200px;"></textarea>
+                        <button type="button" class="btn btn-primary" onclick="toggleFullscreen('articleText')" style="height: fit-content;">Полноэкранный режим / Выход</button>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="required">Аннотация (до 6 строк)</label>
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
-                        <textarea id="applicationAnnotation" class="form-control" rows="6" placeholder="Аннотация статьи (не более 6 строк)"></textarea>
-                        <button type="button" class="btn btn-primary" onclick="toggleFullscreen('applicationAnnotation')" style="height: fit-content;">Полноэкранный режим</button>
+                        <textarea id="articleAnnotation" class="form-control" rows="6" placeholder="Аннотация статьи (не более 6 строк)"></textarea>
+                        <button type="button" class="btn btn-primary" onclick="toggleFullscreen('articleAnnotation')" style="height: fit-content;">Полноэкранный режим / Выход</button>
                     </div>
                 </div>
                 <button type="submit" class="submit-btn">Отправить заявку</button>
@@ -1219,6 +1223,8 @@
                 textarea.style.height = '';
                 textarea.style.zIndex = '';
                 textarea.style.fontSize = '';
+                textarea.style.padding = '';
+                textarea.style.boxSizing = '';
             } else {
                 // Enter fullscreen
                 textarea.classList.add('fullscreen');
@@ -1254,17 +1260,26 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const authorEmail = document.getElementById('authorEmail').value;
-            const content = document.getElementById('applicationContent').value;
-            const annotation = document.getElementById('applicationAnnotation').value;
+            const fio = document.getElementById('fio').value;
+            const phone = document.getElementById('phone').value;
+            const socialLink = document.getElementById('socialLink').value;
+            const email = document.getElementById('email').value;
+            const topic = document.getElementById('topic').value;
+            const articleText = document.getElementById('articleText').value;
+            const articleAnnotation = document.getElementById('articleAnnotation').value;
             
             // Get selected category checkboxes
             const checkedCategories = Array.from(document.querySelectorAll('#applicationCategoriesCheckboxes input[name="category"]:checked')).map(cb => parseInt(cb.value));
             
-            if (!title || !author || !authorEmail || !content) {
+            if (!fio || !phone || !socialLink || !email || !topic || !articleText) {
                 alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+            
+            // Validate email format
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Пожалуйста, введите корректный email адрес');
                 return;
             }
             
@@ -1273,17 +1288,20 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        title,
-                        author,
-                        authorEmail,
-                        content,
-                        annotation,
+                        title: topic, // Using topic as title
+                        author: fio,
+                        authorEmail: email,
+                        authorPhone: phone,
+                        authorSocial: socialLink,
+                        content: articleText,
+                        annotation: articleAnnotation,
                         categories: checkedCategories
                     })
                 });
                 
                 if (response.ok) {
-                    alert('Заявка успешно отправлена! Мы свяжемся с вами на указанный email для дальнейших инструкций.');
+                    const result = await response.json();
+                    alert('Заявка успешно отправлена! Статья находится на модерации. Мы уведомим вас на email о результате проверки.');
                     e.target.reset();
                     formContainer.classList.remove('show');
                     showFormBtn.style.display = 'block';

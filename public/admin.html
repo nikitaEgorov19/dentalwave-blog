@@ -610,14 +610,14 @@
             } catch (error) { console.error('Error:', error); }
         });
         
-        function editArticle(id, title, author, authorEmail, authorTelegram, authorVk, content, categoriesArr, annotation) {
+        function editArticle(id, title, author, authorEmail, authorPhone, authorSocial, content, categoriesArr, annotation) {
             isEditMode = true;
             document.getElementById('articleId').value = id;
             document.getElementById('title').value = title;
             document.getElementById('author').value = author;
             document.getElementById('authorEmail').value = authorEmail || '';
-            document.getElementById('authorTelegram').value = authorTelegram || '';
-            document.getElementById('authorVk').value = authorVk || '';
+            document.getElementById('authorPhone').value = authorPhone || '';
+            document.getElementById('authorSocial').value = authorSocial || '';
             document.getElementById('content').value = content.replace(/\\n/g, '\n');
             document.getElementById('annotation').value = annotation || '';
             

@@ -158,6 +158,8 @@ app.post('/api/articles', async (req, res) => {
         annotation: req.body.annotation || '',
         author: req.body.author || 'Anonymous',
         authorEmail: req.body.authorEmail || '',
+        authorPhone: req.body.authorPhone || '',
+        authorSocial: req.body.authorSocial || '',
         categoryId: categoriesArray[0] || 1,
         categories: categoriesArray,
         views: 0,
@@ -175,6 +177,13 @@ app.post('/api/articles', async (req, res) => {
             `Здравствуйте, ${newArticle.author}!\n\nВаша статья "${newArticle.title}" отправлена на модерацию. Вы получите уведомление на эту почту, когда решение будет принято.\n\nС уважением,\nРедакция DENTAL journal`
         );
     }
+    
+    // Send email notification to admin about new submission
+    await sendEmail(
+        "guccihighwaters@mail.ru", // Admin email
+        'Новая заявка на публикацию',
+        `Получена новая заявка на публикацию:\n\nАвтор: ${newArticle.author}\nEmail: ${newArticle.authorEmail}\nТелефон: ${newArticle.authorPhone}\nСоциальная сеть: ${newArticle.authorSocial}\nТема: ${newArticle.title}\n\nПроверьте заявку в админ панели: ${req.protocol}://${req.get('host')}/admin`
+    );
     
     res.json(newArticle);
 });
