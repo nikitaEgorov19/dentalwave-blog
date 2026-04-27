@@ -1220,10 +1220,12 @@
                 textarea.style.boxSizing = '';
                 
                 // Remove close button if exists
-                const closeButton = container.querySelector('.fullscreen-close');
-                if (closeButton) {
-                    closeButton.remove();
-                }
+                const closeButtons = document.querySelectorAll('.fullscreen-close');
+                closeButtons.forEach(button => {
+                    if (button && button.parentNode) {
+                        button.parentNode.removeChild(button);
+                    }
+                });
             } else {
                 // Enter fullscreen
                 textarea.classList.add('fullscreen');
