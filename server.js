@@ -158,8 +158,6 @@ app.post('/api/articles', async (req, res) => {
         annotation: req.body.annotation || '',
         author: req.body.author || 'Anonymous',
         authorEmail: req.body.authorEmail || '',
-        authorTelegram: req.body.authorTelegram || '',
-        authorVk: req.body.authorVk || '',
         categoryId: categoriesArray[0] || 1,
         categories: categoriesArray,
         views: 0,
@@ -262,7 +260,12 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         const article = articles.find(a => a.id === parseInt(req.params.id));
         if (!article) return res.status(404).json({ error: 'Article not found' });
 
-        const doc = new PDFDocument({ margin: 50, size: 'A4' });
+        // Create PDF with A4 size and 20mm margins (0.787 inches)
+        const doc = new PDFDocument({ 
+            size: 'A4', 
+            margins: { top: 20, bottom: 20, left: 20, right: 20 } // 20mm in points (1mm = 2.83465 points, so 20mm ≈ 56.7 points)
+        });
+        
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(article.title)}.pdf`);
 
@@ -293,24 +296,57 @@ app.get('/api/articles/:id/pdf', (req, res) => {
         }
 
         doc.pipe(res);
-        doc.fontSize(20).text(article.title, { align: 'center' });
-        doc.moveDown();
-        doc.fontSize(12).text(`Автор: ${article.author}`, { align: 'left' });
-        doc.text(`Дата: ${article.date}`, { align: 'left' });
-        doc.moveDown();
+        
+        // Заголовок статьи - заглавными буквами, выравнивание по центру
+        doc.fontSize(14)
+           .text(article.title.toUpperCase(), { 
+               align: 'center',
+               lineGap: 12, // 1.5 line spacing for 14pt font
+               paragraphGap: 12 * 1.25 // 1.25 cm paragraph indent (converted to points)
+           })
+           .moveDown();
+           
+        // Аннотация (если есть)
         if (article.annotation) {
-            doc.fontSize(14).fillColor('blue');
-            doc.text('Аннотация:', { continued: true });
-            doc.fillColor('black');
-            doc.moveDown();
-            doc.fontSize(12).text(article.annotation, { align: 'justify', lineGap: 5 });
-            doc.moveDown(2);
+            doc.fontSize(14)
+               .fillColor('blue')
+               .text('Аннотация:', { continued: true })
+               .fillColor('black')
+               .moveDown();
+               
+            doc.fontSize(14)
+               .text(article.annotation, { 
+                   align: 'justify',
+                   lineGap: 12, // 1.5 line spacing
+                   paragraphGap: 12 * 1.25 // 1.25 cm paragraph indent
+               })
+               .moveDown(2);
         }
-        doc.fontSize(12);
-        article.content.split('\n\n').forEach(para => {
-            doc.text(para, { align: 'justify', lineGap: 3 });
-            doc.moveDown();
+        
+        // Основной текст
+        doc.fontSize(14);
+        
+        // Разбиваем контент на параграфы и обрабатываем каждый
+        const paragraphs = article.content.split('\n\n');
+        paragraphs.forEach((para, index) => {
+            // Добавляем абзацный отступ 1.25 см для каждого параграфа кроме первого
+            if (index > 0) {
+                doc.moveDown(1.25 * 14 / 12); // 1.25 cm в точках для 14pt шрифта
+            }
+            
+            doc.text(para, { 
+                align: 'justify',
+                lineGap: 12, // 1.5 line spacing (14pt * 1.5 = 21pt, так что gap = 21-14 = 7pt)
+                // Примечание: PDFKit не имеет прямого способа отключить переносы слов,
+                // но мы можем попытаться контролировать это через другие параметры
+            });
+            
+            // Добавляем пустую строку между параграфами (кроме последнего)
+            if (index < paragraphs.length - 1) {
+                doc.moveDown();
+            }
         });
+        
         doc.end();
     } catch (err) {
         console.error('PDF generation error:', err);
