@@ -206,6 +206,7 @@
             border-radius: 16px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             border: 4px solid var(--gold);
+            display: block;
         }
         
         .main-img {
@@ -975,11 +976,11 @@
                     <span class="contact-icon">✉️</span>
                     <span>info@dental-journal.ru</span>
                 </div>
-                <div class="social-links">
-                    <a href="https://t.me/dentaljournal" class="social-link" title="Telegram">TG</a>
-                    <a href="https://vk.com/dentaljournal" class="social-link" title="VK">VK</a>
-                    <a href="mailto:info@dental-journal.ru" class="social-link" title="Email">@</a>
-                </div>
+<div class="social-links">
+                     <a href="https://t.me/Akulii_chlen" class="social-link" title="Telegram">TG</a>
+                     <a href="https://vk.com/v.bely778899" class="social-link" title="VK">VK</a>
+                     <a href="mailto:guccihighwaters@mail.ru" class="social-link" title="Email">@</a>
+                 </div>
             </div>
         </div>
     </section>
@@ -1211,6 +1212,7 @@
         // Fullscreen toggle for textareas
         function toggleFullscreen(textareaId) {
             const textarea = document.getElementById(textareaId);
+            const container = textarea.parentElement;
             const isFullscreen = textarea.classList.contains('fullscreen');
             
             if (isFullscreen) {
@@ -1225,6 +1227,12 @@
                 textarea.style.fontSize = '';
                 textarea.style.padding = '';
                 textarea.style.boxSizing = '';
+                
+                // Remove close button if exists
+                const closeButton = container.querySelector('.fullscreen-close');
+                if (closeButton) {
+                    closeButton.remove();
+                }
             } else {
                 // Enter fullscreen
                 textarea.classList.add('fullscreen');
@@ -1237,6 +1245,31 @@
                 textarea.style.fontSize = '1.2rem';
                 textarea.style.padding = '2rem';
                 textarea.style.boxSizing = 'border-box';
+                
+                // Add close button
+                const closeButton = document.createElement('button');
+                closeButton.className = 'fullscreen-close';
+                closeButton.innerHTML = '&times;';
+                closeButton.style.position = 'fixed';
+                closeButton.style.top = '20px';
+                closeButton.style.right = '20px';
+                closeButton.style.width = '40px';
+                closeButton.style.height = '40px';
+                closeButton.style.background = 'rgba(0,0,0,0.8)';
+                closeButton.style.color = 'white';
+                closeButton.style.border = 'none';
+                closeButton.style.borderRadius = '50%';
+                closeButton.style.fontSize = '24px';
+                closeButton.style.cursor = 'pointer';
+                closeButton.style.zIndex = '1001';
+                closeButton.style.display = 'flex';
+                closeButton.style.alignItems = 'center';
+                closeButton.style.justifyContent = 'center';
+                closeButton.onclick = () => toggleFullscreen(textareaId);
+                
+                // Add close button to body
+                document.body.appendChild(closeButton);
+                
                 textarea.focus();
             }
         }

@@ -15,8 +15,11 @@
             --black: #0a0a0a;
             --gray-100: #f8f9fa;
             --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --warning: #ffc107;
             --danger: #e74c3c;
             --success: #27ae60;
+            --info: #17a2b8;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -541,7 +544,7 @@
                 } else if (article.status === 'rejected') {
                     statusBadge = '<span class="category-tag" style="background:var(--danger);color:white;">Отклонена</span>';
                 } else {
-                    statusBadge = '<span class="category-tag" style="background:var(--gray-200);color:black;">На модерации</span>';
+                    statusBadge = '<span class="category-tag" style="background:var(--warning);color:black;">На модерации</span>';
                 }
                 
                 return `
