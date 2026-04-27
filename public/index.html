@@ -880,7 +880,7 @@
             </div>
         </div>
         <div class="main-visual">
-            <img src="/1.jpg" alt="DentalWave" class="main-img" onerror="this.style.display='none'; document.getElementById('bookFallback').style.display='flex';">
+            <img src="/1.png" alt="DentalWave" class="main-img" onerror="this.style.display='none'; document.getElementById('bookFallback').style.display='flex';">
             <div class="book-container" id="bookFallback" style="display:none;">DentalWave</div>
         </div>
     </section>
@@ -920,38 +920,34 @@
             <button class="close-form-btn" id="closeFormBtn" title="Закрыть форму">×</button>
             <form class="application-form" id="applicationForm">
                 <div class="form-group">
-                    <label class="required">ФИО</label>
-                    <input type="text" class="form-control" name="fio" required placeholder="Иванов Ива Иванович">
+                    <label class="required">Заголовок статьи</label>
+                    <input type="text" class="form-control" id="title" required placeholder="Введите заголовок статьи">
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="required">Контактный телефон</label>
-                        <input type="tel" class="form-control" name="phone" required placeholder="+7 (999) 000-00-00">
+                <div class="form-group">
+                    <label class="required">ФИО автора</label>
+                    <input type="text" class="form-control" id="author" required placeholder="Иванов Иван Иванович">
+                </div>
+                <div class="form-group">
+                    <label class="required">Email автора (для уведомлений)</label>
+                    <input type="email" class="form-control" id="authorEmail" required placeholder="example@mail.ru">
+                </div>
+                <div class="form-group">
+                    <label>Разделы</label>
+                    <div id="applicationCategoriesCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;"></div>
+                </div>
+                <div class="form-group">
+                    <label class="required">Содержание статьи</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <textarea id="applicationContent" class="form-control" required style="flex: 1; min-height: 200px;"></textarea>
+                        <button type="button" class="btn btn-primary" onclick="toggleFullscreen('applicationContent')" style="height: fit-content;">Полноэкранный режим</button>
                     </div>
-                    <div class="form-group">
-                        <label>Регион</label>
-                        <select class="form-control" name="region">
-                            <option value="">Выберите регион</option>
-                            <option value="moscow">Москва</option>
-                            <option value="spb">Санкт-Петербург</option>
-                            <option value="krasnodar">Краснодарский край</option>
-                            <option value="sverdlovsk">Свердловская область</option>
-                            <option value="rostov">Ростовская область</option>
-                            <option value="other">Другой</option>
-                        </select>
+                </div>
+                <div class="form-group">
+                    <label class="required">Аннотация (до 6 строк)</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <textarea id="applicationAnnotation" class="form-control" rows="6" placeholder="Аннотация статьи (не более 6 строк)"></textarea>
+                        <button type="button" class="btn btn-primary" onclick="toggleFullscreen('applicationAnnotation')" style="height: fit-content;">Полноэкранный режим</button>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Ссылка на социальную сеть для связи</label>
-                    <input type="url" class="form-control" name="social" placeholder="https://vk.com/username">
-                </div>
-                <div class="form-group">
-                    <label class="required">Тема предлагаемой статьи</label>
-                    <input type="text" class="form-control" name="topic" required>
-                </div>
-                <div class="form-group">
-                    <label class="required">Краткий текст статьи (пожелания)</label>
-                    <textarea class="form-control" name="text" rows="6" required placeholder="Опишите основную идею статьи, цели и методологию..."></textarea>
                 </div>
                 <button type="submit" class="submit-btn">Отправить заявку</button>
             </form>
@@ -1204,7 +1200,103 @@
         window.addEventListener('load', async () => {
             await initConfig();
             await initData();
+            await loadApplicationCategories();
             updateActiveTab();
+        });
+        
+        // Fullscreen toggle for textareas
+        function toggleFullscreen(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            const isFullscreen = textarea.classList.contains('fullscreen');
+            
+            if (isFullscreen) {
+                // Exit fullscreen
+                textarea.classList.remove('fullscreen');
+                textarea.style.position = '';
+                textarea.style.top = '';
+                textarea.style.left = '';
+                textarea.style.width = '';
+                textarea.style.height = '';
+                textarea.style.zIndex = '';
+                textarea.style.fontSize = '';
+            } else {
+                // Enter fullscreen
+                textarea.classList.add('fullscreen');
+                textarea.style.position = 'fixed';
+                textarea.style.top = '0';
+                textarea.style.left = '0';
+                textarea.style.width = '100vw';
+                textarea.style.height = '100vh';
+                textarea.style.zIndex = '1000';
+                textarea.style.fontSize = '1.2rem';
+                textarea.style.padding = '2rem';
+                textarea.style.boxSizing = 'border-box';
+                textarea.focus();
+            }
+        }
+        
+        // Load categories for application form
+        async function loadApplicationCategories() {
+            try {
+                const categories = await fetch('/api/categories').then(r => r.json());
+                
+                // Render checkboxes for application form
+                const checkboxesContainer = document.getElementById('applicationCategoriesCheckboxes');
+                checkboxesContainer.innerHTML = categories.map(c => 
+                    `<label style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem;background:var(--gray-100);border-radius:6px;">
+                        <input type="checkbox" name="category" value="${c.id}" class="form-control" style="width:auto;margin:0;"> ${c.name}
+                    </label>`
+                ).join('');
+            } catch (e) { console.error(e); }
+        }
+        
+        // Handle application form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const authorEmail = document.getElementById('authorEmail').value;
+            const content = document.getElementById('applicationContent').value;
+            const annotation = document.getElementById('applicationAnnotation').value;
+            
+            // Get selected category checkboxes
+            const checkedCategories = Array.from(document.querySelectorAll('#applicationCategoriesCheckboxes input[name="category"]:checked')).map(cb => parseInt(cb.value));
+            
+            if (!title || !author || !authorEmail || !content) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/articles', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title,
+                        author,
+                        authorEmail,
+                        content,
+                        annotation,
+                        categories: checkedCategories
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Заявка успешно отправлена! Мы свяжемся с вами на указанный email для дальнейших инструкций.');
+                    e.target.reset();
+                    formContainer.classList.remove('show');
+                    showFormBtn.style.display = 'block';
+                    
+                    // Also redirect to feed to show new article is pending
+                    document.getElementById('feed').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert('Ошибка при отправке заявки. Пожалуйста, попробуйте позже.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Произошла ошибка при отправке заявки');
+            }
         });
     </script>
 </body>
