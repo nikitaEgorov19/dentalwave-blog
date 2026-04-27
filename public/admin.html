@@ -142,6 +142,22 @@
             min-height: 120px;
         }
         
+        textarea.form-control.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            font-size: 1.2rem;
+            padding: 2rem;
+            box-sizing: border-box;
+            background: white;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        
         .btn {
             padding: 0.8rem 1.8rem;
             border: none;
@@ -297,22 +313,40 @@
                     <label>Заголовок</label>
                     <input type="text" id="title" class="form-control" required>
                 </div>
-                <div class="form-group">
-                    <label>Автор</label>
-                    <input type="text" id="author" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>Разделы</label>
+<div class="form-group">
+            <label>Автор</label>
+            <input type="text" id="author" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Email автора</label>
+            <input type="email" id="authorEmail" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Telegram (ссылка)</label>
+            <input type="url" id="authorTelegram" class="form-control" placeholder="https://t.me/...">
+        </div>
+        <div class="form-group">
+            <label>ВКонтакте (ссылка)</label>
+            <input type="url" id="authorVk" class="form-control" placeholder="https://vk.com/...">
+        </div>
+        <div class="form-group">
+            <label>Разделы</label>
                     <div id="categoriesCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;"></div>
                 </div>
-                <div class="form-group">
-                    <label>Содержание</label>
-                    <textarea id="content" class="form-control" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Аннотация</label>
-                    <textarea id="annotation" class="form-control" rows="3" placeholder="Краткое описание статьи (отображается в карточке)"></textarea>
-                </div>
+<div class="form-group">
+            <label>Содержание</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <textarea id="content" class="form-control" required style="flex: 1; min-height: 200px;"></textarea>
+                <button type="button" class="btn btn-primary" onclick="toggleFullscreen('content')" style="height: fit-content;">Полноэкранный режим</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Аннотация (до 6 строк)</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <textarea id="annotation" class="form-control" rows="6" placeholder="Аннотация статьи (не более 6 строк)"></textarea>
+                <button type="button" class="btn btn-primary" onclick="toggleFullscreen('annotation')" style="height: fit-content;">Полноэкранный режим</button>
+            </div>
+        </div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">Добавить статью</button>
                 <button type="button" class="btn btn-cancel" id="cancelBtn" style="display: none;">Отмена</button>
             </form>
@@ -405,6 +439,37 @@
             renderArticlesTable(filtered);
         }
         
+        // Fullscreen toggle for textareas
+        function toggleFullscreen(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            const isFullscreen = textarea.classList.contains('fullscreen');
+            
+            if (isFullscreen) {
+                // Exit fullscreen
+                textarea.classList.remove('fullscreen');
+                textarea.style.position = '';
+                textarea.style.top = '';
+                textarea.style.left = '';
+                textarea.style.width = '';
+                textarea.style.height = '';
+                textarea.style.zIndex = '';
+                textarea.style.fontSize = '';
+            } else {
+                // Enter fullscreen
+                textarea.classList.add('fullscreen');
+                textarea.style.position = 'fixed';
+                textarea.style.top = '0';
+                textarea.style.left = '0';
+                textarea.style.width = '100vw';
+                textarea.style.height = '100vh';
+                textarea.style.zIndex = '1000';
+                textarea.style.fontSize = '1.2rem';
+                textarea.style.padding = '2rem';
+                textarea.style.boxSizing = 'border-box';
+                textarea.focus();
+            }
+        }
+        
         // Categories
         async function loadCategories() {
             try {
@@ -477,6 +542,16 @@
                     catNames = 'Разное';
                 }
                 
+                // Status badge
+                let statusBadge = '';
+                if (article.status === 'published') {
+                    statusBadge = '<span class="category-tag" style="background:var(--success);color:white;">Опубликована</span>';
+                } else if (article.status === 'rejected') {
+                    statusBadge = '<span class="category-tag" style="background:var(--danger);color:white;">Отклонена</span>';
+                } else {
+                    statusBadge = '<span class="category-tag" style="background:var(--gray-200);color:black;">На модерации</span>';
+                }
+                
                 return `
                     <tr>
                         <td>${article.id}</td>
@@ -484,8 +559,9 @@
                         <td><span class="category-tag">${catNames}</span></td>
                         <td>${article.author}</td>
                         <td>${article.date}</td>
+                        <td>${statusBadge}</td>
                         <td class="actions-cell">
-                            <button class="btn btn-edit" onclick="editArticle(${article.id}, '${escapeQuote(article.title)}', '${escapeQuote(article.author)}', '${escapeQuote(article.content)}', [${(article.categories || (article.categoryId ? [article.categoryId] : [])).join(',')}], '${escapeQuote(article.annotation || '')}')">✏️ Редактировать</button>
+                            <button class="btn btn-edit" onclick="editArticle(${article.id}, '${escapeQuote(article.title)}', '${escapeQuote(article.author)}', '${escapeQuote(article.authorEmail || '')}', '${escapeQuote(article.authorTelegram || '')}', '${escapeQuote(article.authorVk || '')}', '${escapeQuote(article.content)}', [${(article.categories || (article.categoryId ? [article.categoryId] : [])).join(',')}], '${escapeQuote(article.annotation || '')}')">✏️ Редактировать</button>
                             <button class="btn btn-delete" onclick="deleteArticle(${article.id})">🗑️ Удалить</button>
                         </td>
                     </tr>
@@ -504,6 +580,9 @@
             const id = document.getElementById('articleId').value;
             const title = document.getElementById('title').value;
             const author = document.getElementById('author').value;
+            const authorEmail = document.getElementById('authorEmail').value;
+            const authorTelegram = document.getElementById('authorTelegram').value;
+            const authorVk = document.getElementById('authorVk').value;
             const content = document.getElementById('content').value;
             const annotation = document.getElementById('annotation').value;
             
@@ -512,7 +591,10 @@
             
             const data = { 
                 title, 
-                author, 
+                author,
+                authorEmail,
+                authorTelegram,
+                authorVk,
                 content, 
                 annotation,
                 categories: checkedCategories
@@ -536,11 +618,14 @@
             } catch (error) { console.error('Error:', error); }
         });
         
-        function editArticle(id, title, author, content, categoriesArr, annotation) {
+        function editArticle(id, title, author, authorEmail, authorTelegram, authorVk, content, categoriesArr, annotation) {
             isEditMode = true;
             document.getElementById('articleId').value = id;
             document.getElementById('title').value = title;
             document.getElementById('author').value = author;
+            document.getElementById('authorEmail').value = authorEmail || '';
+            document.getElementById('authorTelegram').value = authorTelegram || '';
+            document.getElementById('authorVk').value = authorVk || '';
             document.getElementById('content').value = content.replace(/\\n/g, '\n');
             document.getElementById('annotation').value = annotation || '';
             

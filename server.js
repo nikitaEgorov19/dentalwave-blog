@@ -12,8 +12,35 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const PDFDocument = require('pdfkit');
+const nodemailer = require('nodemailer');
 
 console.log('All modules loaded OK');
+
+// Email configuration (using ethereal for testing, replace with real credentials in production)
+const transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
+        user: "ethereal.user@ethereal.email", // replace with real email
+        pass: "ethereal.password" // replace with real password
+    }
+});
+
+// Function to send email
+async function sendEmail(to, subject, text) {
+    try {
+        await transporter.sendMail({
+            from: '"DENTAL journal" <guccihighwaters@mail.ru>',
+            to,
+            subject,
+            text
+        });
+        console.log(`Email sent to ${to}`);
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -114,7 +141,7 @@ app.get('/api/articles/:id', (req, res) => {
     }
 });
 
-app.post('/api/articles', (req, res) => {
+app.post('/api/articles', async (req, res) => {
     const articles = fs.existsSync(DATA_FILE) ? JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8')) : [];
     let categoriesArray = [];
     if (req.body.categories && Array.isArray(req.body.categories)) {
@@ -130,17 +157,31 @@ app.post('/api/articles', (req, res) => {
         content: req.body.content,
         annotation: req.body.annotation || '',
         author: req.body.author || 'Anonymous',
+        authorEmail: req.body.authorEmail || '',
+        authorTelegram: req.body.authorTelegram || '',
+        authorVk: req.body.authorVk || '',
         categoryId: categoriesArray[0] || 1,
         categories: categoriesArray,
         views: 0,
-        date: new Date().toLocaleDateString('ru-RU')
+        date: new Date().toLocaleDateString('ru-RU'),
+        status: 'pending' // pending, published, rejected
     };
     articles.push(newArticle);
     fs.writeFileSync(DATA_FILE, JSON.stringify(articles, null, 2));
+    
+    // Send email notification to author about submission
+    if (newArticle.authorEmail) {
+        await sendEmail(
+            newArticle.authorEmail,
+            'Статья отправлена на модерацию',
+            `Здравствуйте, ${newArticle.author}!\n\nВаша статья "${newArticle.title}" отправлена на модерацию. Вы получите уведомление на эту почту, когда решение будет принято.\n\nС уважением,\nРедакция DENTAL journal`
+        );
+    }
+    
     res.json(newArticle);
 });
 
-app.put('/api/articles/:id', (req, res) => {
+app.put('/api/articles/:id', async (req, res) => {
     const articles = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
     const index = articles.findIndex(a => a.id === parseInt(req.params.id));
     if (index !== -1) {
@@ -154,6 +195,9 @@ app.put('/api/articles/:id', (req, res) => {
         } else {
             categoriesArray = [articles[index].categoryId || 1];
         }
+        
+        // Store previous status to check if it changed
+        const previousStatus = articles[index].status;
         articles[index] = {
             ...articles[index],
             ...req.body,
@@ -163,6 +207,27 @@ app.put('/api/articles/:id', (req, res) => {
             date: articles[index].date
         };
         fs.writeFileSync(DATA_FILE, JSON.stringify(articles, null, 2));
+        
+        // Send email notification if status changed to published or rejected
+        if (req.body.status && req.body.status !== previousStatus) {
+            const article = articles[index];
+            if (article.authorEmail) {
+                let subject, text;
+                if (req.body.status === 'published') {
+                    subject = 'Ваша статья опубликована';
+                    text = `Здравствуйте, ${article.author}!\n\nПоздравляем! Ваша статья "${article.title}" опубликована в журнале DENTAL journal.\n\nС уважением,\nРедакция DENTAL journal`;
+                } else if (req.body.status === 'rejected') {
+                    const rejectionReason = req.body.rejectionReason || 'Не указано';
+                    subject = 'Ваша статья отклонена';
+                    text = `Здравствуйте, ${article.author}!\n\nК сожалению, ваша статья "${article.title}" не прошла модерацию.\n\nПричина отклонения: ${rejectionReason}\n\nВы можете внести правки и отправить статью повторно.\n\nС уважением,\nРедакция DENTAL journal`;
+                }
+                
+                if (subject && text) {
+                    await sendEmail(article.authorEmail, subject, text);
+                }
+            }
+        }
+        
         res.json(articles[index]);
     } else {
         res.status(404).json({ error: 'Article not found' });
