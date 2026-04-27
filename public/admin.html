@@ -334,7 +334,11 @@
             <label>Автор</label>
             <input type="text" id="author" class="form-control" required>
         </div>
-<div class="form-group">
+        <div class="form-group">
+            <label>Email автора</label>
+            <input type="email" id="authorEmail" class="form-control" required>
+        </div>
+        <div class="form-group">
             <label>Телефон</label>
             <input type="tel" id="authorPhone" class="form-control" placeholder="+7 (999) 000-00-00">
         </div>
@@ -664,21 +668,28 @@
             };
             
             try {
+                let response;
                 if (isEditMode) {
-                    await fetch(`/api/articles/${id}`, { 
+                    response = await fetch(`/api/articles/${id}`, { 
                         method: 'PUT', 
                         headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + adminAuth }, 
                         body: JSON.stringify(data) 
                     });
                 } else {
-                    await fetch('/api/articles', { 
+                    response = await fetch('/api/articles', { 
                         method: 'POST', 
                         headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + adminAuth }, 
                         body: JSON.stringify(data) 
                     });
                 }
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Ошибка при сохранении статьи');
+                }
+                
                 resetForm(); loadArticles();
-            } catch (error) { console.error('Error:', error); alert('Ошибка при сохранении статьи'); }
+            } catch (error) { console.error('Error:', error); alert(error.message); }
         });
         
         function editArticle(id, title, author, authorEmail, authorPhone, authorSocial, content, categoriesArr, annotation) {
@@ -708,9 +719,13 @@
             if (!adminAuth) { alert('Сессия истекла, обновите страницу'); return; }
             if (confirm('🗑️ Удалить статью навсегда?')) { 
                 try { 
-                    await fetch(`/api/articles/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Basic ' + adminAuth } }); 
+                    const response = await fetch(`/api/articles/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Basic ' + adminAuth } });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Ошибка при удалении статьи');
+                    }
                     loadArticles(); 
-                } catch (error) { console.error('Error:', error); } 
+                } catch (error) { console.error('Error:', error); alert(error.message); } 
             } 
         }
         
