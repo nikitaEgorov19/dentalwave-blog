@@ -16,6 +16,8 @@
             --gray-100: #f8f9fa;
             --gray-200: #e9ecef;
             --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-800: #343a40;
             --warning: #ffc107;
             --danger: #e74c3c;
             --success: #27ae60;
@@ -217,6 +219,33 @@
             color: var(--white);
         }
         
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--black);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #219653;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: black;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
         .category-tag {
             display: inline-block;
             background: var(--black);
@@ -292,112 +321,356 @@
             .btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
             .form-row { grid-template-columns: 1fr; }
         }
+        
+        /* New styles for improved layout */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-published {
+            background: var(--success);
+            color: white;
+        }
+        
+        .status-pending {
+            background: var(--warning);
+            color: black;
+        }
+        
+        .status-rejected {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .status-select {
+            padding: 0.9rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .status-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+        
+        .optional-fields {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .optional-fields h4 {
+            font-size: 0.9rem;
+            color: var(--gray-300);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--gray-200);
+        }
+        
+        .editor-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .editor-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--gray-200);
+            background: var(--white);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .editor-btn:hover {
+            border-color: var(--gold);
+            background: var(--gray-100);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast-success {
+            background: var(--success);
+        }
+        
+        .toast-error {
+            background: var(--danger);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+        
+        .modal p {
+            margin-bottom: 1.5rem;
+            color: var(--gray-300);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>DENTAL journal — Админ</h1>
-        <a href="/">На сайт</a>
+        <a href="/" target="_blank" class="btn btn-primary" style="text-decoration: none;">🌐 На сайт</a>
     </header>
     
         <div class="container">
             <!-- Header with Admin & Search -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <div class="search-section" style="flex: 1; max-width: 500px;">
-                    <input type="text" id="searchInput" class="search-box" placeholder="🔍 Поиск статейпо названию, автору или содержанию...">
+                    <input type="text" id="searchInput" class="search-box" placeholder="🔍 Поиск статей по названию, автору или содержанию...">
                 </div>
-                <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="display: flex; gap: 0.8rem; align-items: center;">
+                    <span id="userDisplay" style="color: var(--white); font-size: 0.9rem;"></span>
                     <a href="/" target="_blank" class="btn btn-primary" style="text-decoration: none;">🌐 На сайт</a>
+                    <button class="btn btn-secondary" onclick="logout()" style="padding: 0.6rem 1.2rem;">Выйти</button>
                 </div>
             </div>
         
-        <!-- Category Management -->
-        <div class="form-section">
-            <h2>Управление разделами</h2>
-            <div style="display: flex; gap: 0.8rem; margin-bottom: 1.5rem;">
-                <input type="text" id="newCategory" class="form-control" placeholder="Название нового раздела" style="flex: 1;">
-                <button class="btn btn-primary" onclick="addCategory()">+ Добавить</button>
-            </div>
-            <div id="categoriesList" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
-        </div>
-        
-        <!-- Add/Edit Article Form -->
-        <div class="form-section">
-            <h2 id="formTitle">Добавить статью</h2>
-            <form id="articleForm">
-                <input type="hidden" id="articleId">
-                <div class="form-group">
-                    <label>Заголовок</label>
-                    <input type="text" id="title" class="form-control" required>
+            <!-- Category Management -->
+            <div class="form-section">
+                <h2>Управление разделами</h2>
+                <div class="form-row" style="margin-bottom: 1rem;">
+                    <div>
+                        <input type="text" id="newCategory" class="form-control" placeholder="Название нового раздела">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-primary" onclick="addCategory()" style="white-space: nowrap;">+ Добавить раздел</button>
+                    </div>
                 </div>
-<div class="form-group">
-            <label>Автор</label>
-            <input type="text" id="author" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label>Email автора</label>
-            <input type="email" id="authorEmail" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label>Телефон</label>
-            <input type="tel" id="authorPhone" class="form-control" placeholder="+7 (999) 000-00-00">
-        </div>
-        <div class="form-group">
-            <label>Ссылка на социальную сеть</label>
-            <input type="url" id="authorSocial" class="form-control" placeholder="https://vk.com/username или https://t.me/username">
-        </div>
-        <div class="form-group">
-            <label>Разделы</label>
-                    <div id="categoriesCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;"></div>
-                </div>
-<div class="form-group">
-            <label>Содержание</label>
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <textarea id="content" class="form-control" required style="flex: 1; min-height: 200px;"></textarea>
-                <button type="button" class="btn btn-primary" onclick="toggleFullscreen('content')" style="height: fit-content;">Полноэкранный режим</button>
+                <div id="categoriesList" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
             </div>
-        </div>
-        <div class="form-group">
-            <label>Аннотация (до 6 строк)</label>
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <textarea id="annotation" class="form-control" rows="6" placeholder="Аннотация статьи (не более 6 строк)"></textarea>
-                <button type="button" class="btn btn-primary" onclick="toggleFullscreen('annotation')" style="height: fit-content;">Полноэкранный режим</button>
-            </div>
-        </div>
-                <button type="submit" class="btn btn-primary" id="submitBtn">Добавить статью</button>
-                <button type="button" class="btn btn-cancel" id="cancelBtn" style="display: none;">Отмена</button>
-            </form>
-        </div>
         
-        <!-- Articles Table -->
-        <div class="form-section">
-            <h2>Список статей</h2>
-            <div class="articles-table">
-                <table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Заголовок</th>
-<th>Раздел</th>
-<th>Автор</th>
-<th>Дата</th>
-<th>Статус</th>
-<th>Действия</th>
-</tr>
-</thead>
-                    <tbody id="articlesTable"></tbody>
-                </table>
-                <div id="emptyState" class="empty-state" style="display: none;">Статей не найдено</div>
+            <!-- Add/Edit Article Form -->
+            <div class="form-section">
+                <h2 id="formTitle">Добавить статью</h2>
+                <form id="articleForm">
+                    <input type="hidden" id="articleId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Заголовок <span style="color: var(--danger);">*</span></label>
+                            <input type="text" id="title" class="form-control" required placeholder="Название статьи">
+                        </div>
+                        <div class="form-group">
+                            <label>Автор <span style="color: var(--danger);">*</span></label>
+                            <input type="text" id="author" class="form-control" required placeholder="ФИО автора">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email автора <span style="color: var(--danger);">*</span></label>
+                            <input type="email" id="authorEmail" class="form-control" required placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Статус статьи <span style="color: var(--danger);">*</span></label>
+                            <select id="status" class="status-select">
+                                <option value="published">Опубликовано</option>
+                                <option value="pending" selected>На модерации</option>
+                                <option value="rejected">Отклонено</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="optional-fields">
+                        <h4>Контактная информация (необязательно)</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Телефон</label>
+                                <input type="tel" id="authorPhone" class="form-control" placeholder="+7 (999) 000-00-00">
+                            </div>
+                            <div class="form-group">
+                                <label>Ссылка на соц. сеть</label>
+                                <input type="url" id="authorSocial" class="form-control" placeholder="https://vk.com/username">
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="form-group">
+                        <label>Разделы <span style="color: var(--danger);">*</span></label>
+                        <div id="categoriesCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem;"></div>
+                    </div>
+        
+                    <div class="form-group">
+                        <label>Содержание <span style="color: var(--danger);">*</span></label>
+                        <div class="editor-toolbar">
+                            <button type="button" class="editor-btn" onclick="insertFormatting('**', '**')">Жирный</button>
+                            <button type="button" class="editor-btn" onclick="insertFormatting('*', '*')">Курсив</button>
+                            <button type="button" class="editor-btn" onclick="insertFormatting('## ', '')">Заголовок</button>
+                            <button type="button" class="editor-btn" onclick="insertFormatting('- ', '')">Список</button>
+                            <button type="button" class="editor-btn" onclick="toggleFullscreen('content')">⤢</button>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <textarea id="content" class="form-control" required style="flex: 1; min-height: 200px; font-family: 'Inter', monospace;" placeholder="Введите текст статьи..."></textarea>
+                        </div>
+                    </div>
+        
+                    <div class="form-group">
+                        <label>Аннотация</label>
+                        <div class="editor-toolbar">
+                            <button type="button" class="editor-btn" onclick="toggleFullscreen('annotation')">⤢</button>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <textarea id="annotation" class="form-control" rows="4" placeholder="Краткое описание статьи (не более 6 строк)..."></textarea>
+                        </div>
+                    </div>
+        
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success" id="submitBtn" style="flex: 1;">
+                            <span id="submitText">Добавить статью</span>
+                        </button>
+                        <button type="button" class="btn btn-cancel" id="cancelBtn" style="display: none;" onclick="resetForm()">Отмена редактирования</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">Очистить форму</button>
+                    </div>
+                </form>
+            </div>
+        
+            <!-- Articles Table -->
+            <div class="form-section">
+                <h2>Список статей</h2>
+                <div class="form-row" style="margin-bottom: 1rem;">
+                    <div>
+                        <select id="filterStatus" class="status-select" onchange="filterArticles()" style="min-width: 150px;">
+                            <option value="all">Все статусы</option>
+                            <option value="published">Опубликовано</option>
+                            <option value="pending">На модерации</option>
+                            <option value="rejected">Отклонено</option>
+                        </select>
+                    </div>
+                    <div style="text-align: right; color: var(--gray-300);" id="articleCount">Статей: 0</div>
+                </div>
+                <div class="articles-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Заголовок</th>
+                                <th>Разделы</th>
+                                <th>Автор</th>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articlesTable"></tbody>
+                    </table>
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <h3>Статей не найдено</h3>
+                        <p>Создайте первую статью, используя форму выше</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
+        <!-- Modal for Confirmation -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h3 id="modalTitle">Подтверждение</h3>
+                <p id="modalText">Вы уверены?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                    <button class="btn btn-danger" id="modalConfirmBtn" onclick="confirmModal()">Подтвердить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast toast-success"></div>
+
+        <script>
         let isEditMode = false;
         let BASE_URL = '';
         let categories = [];
         let allArticles = [];
         let adminAuth = '';
+        let pendingModalCallback = null;
         
         // Initialize
         async function init() {
@@ -417,11 +690,44 @@
             document.getElementById('searchInput').addEventListener('input', handleSearch);
         }
         
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast toast-' + type + ' show';
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        function openModal(title, text, confirmCallback) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalText').textContent = text;
+            document.getElementById('modalConfirmBtn').className = 'btn btn-danger';
+            document.getElementById('modalConfirmBtn').textContent = 'Подтвердить';
+            pendingModalCallback = confirmCallback;
+            document.getElementById('modal').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+            pendingModalCallback = null;
+        }
+        
+        function confirmModal() {
+            if (pendingModalCallback) {
+                pendingModalCallback();
+                closeModal();
+            }
+        }
+        
+        function logout() {
+            window.location.href = '/';
+        }
+        
         async function getConfig() {
             try {
                 const res = await fetch('/api/config');
                 const data = await res.json();
                 BASE_URL = data.baseUrl;
+                document.getElementById('userDisplay').textContent = 'Админ-режим';
             } catch (e) { BASE_URL = ''; }
         }
         
@@ -429,7 +735,7 @@
             const user = prompt('Логин:');
             if (!user) { window.location.href = '/'; return null; }
             const pass = prompt('Пароль:');
-            if (!pass) { window.location.href = '/'; return null; }
+            if (!user || !pass) { window.location.href = '/'; return null; }
             return btoa(user + ':' + pass);
         }
         
@@ -444,27 +750,29 @@
         // Search
         function handleSearch(e) {
             const query = e.target.value.toLowerCase().trim();
-            if (!query) {
-                renderArticlesTable(allArticles);
-                return;
-            }
-            const filtered = allArticles.filter(a => 
-                a.title.toLowerCase().includes(query) ||
-                a.author.toLowerCase().includes(query) ||
-                a.content.toLowerCase().includes(query) ||
-                (a.annotation && a.annotation.toLowerCase().includes(query))
-            );
+            const filter = document.getElementById('filterStatus').value;
+            let filtered = allArticles.filter(a => {
+                const matchSearch = !query || 
+                    a.title.toLowerCase().includes(query) ||
+                    a.author.toLowerCase().includes(query) ||
+                    a.content.toLowerCase().includes(query) ||
+                    (a.annotation && a.annotation.toLowerCase().includes(query));
+                const matchStatus = filter === 'all' || a.status === filter;
+                return matchSearch && matchStatus;
+            });
             renderArticlesTable(filtered);
+        }
+        
+        function filterArticles() {
+            handleSearch({ target: { value: document.getElementById('searchInput').value } });
         }
         
         // Fullscreen toggle for textareas
         function toggleFullscreen(textareaId) {
             const textarea = document.getElementById(textareaId);
-            const container = textarea.parentElement;
             const isFullscreen = textarea.classList.contains('fullscreen');
             
             if (isFullscreen) {
-                // Exit fullscreen
                 textarea.classList.remove('fullscreen');
                 textarea.style.position = '';
                 textarea.style.top = '';
@@ -475,16 +783,9 @@
                 textarea.style.fontSize = '';
                 textarea.style.padding = '';
                 textarea.style.boxSizing = '';
-                
-                // Remove close button if exists
                 const closeButtons = document.querySelectorAll('.fullscreen-close');
-                closeButtons.forEach(button => {
-                    if (button && button.parentNode) {
-                        button.parentNode.removeChild(button);
-                    }
-                });
+                closeButtons.forEach(button => button.remove());
             } else {
-                // Enter fullscreen
                 textarea.classList.add('fullscreen');
                 textarea.style.position = 'fixed';
                 textarea.style.top = '0';
@@ -496,70 +797,86 @@
                 textarea.style.padding = '2rem';
                 textarea.style.boxSizing = 'border-box';
                 
-                // Add close button
                 const closeButton = document.createElement('button');
                 closeButton.className = 'fullscreen-close';
                 closeButton.innerHTML = '&times;';
-                closeButton.style.position = 'fixed';
-                closeButton.style.top = '20px';
-                closeButton.style.right = '20px';
-                closeButton.style.width = '40px';
-                closeButton.style.height = '40px';
-                closeButton.style.background = 'rgba(0,0,0,0.8)';
-                closeButton.style.color = 'white';
-                closeButton.style.border = 'none';
-                closeButton.style.borderRadius = '50%';
-                closeButton.style.fontSize = '24px';
-                closeButton.style.cursor = 'pointer';
-                closeButton.style.zIndex = '1001';
-                closeButton.style.display = 'flex';
-                closeButton.style.alignItems = 'center';
-                closeButton.style.justifyContent = 'center';
+                closeButton.style.cssText = 'position:fixed;top:20px;right:20px;width:40px;height:40px;background:rgba(0,0,0,0.8);color:white;border:none;border-radius:50%;font-size:24px;cursor:pointer;z-index:1001;display:flex;align-items:center;justify-content:center;';
                 closeButton.onclick = () => toggleFullscreen(textareaId);
-                
-                // Add close button to body
                 document.body.appendChild(closeButton);
-                
                 textarea.focus();
             }
+        }
+        
+        // Editor formatting
+        function insertFormatting(before, after) {
+            const textarea = document.getElementById('content');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const selected = text.substring(start, end) || before + after;
+            const newValue = text.substring(0, start) + before + selected + after + text.substring(end);
+            textarea.value = newValue;
+            textarea.focus();
+            const newPos = start + before.length + selected.length;
+            textarea.setSelectionRange(newPos, newPos + after.length);
         }
         
         // Categories
         async function loadCategories() {
             try {
                 categories = await fetch('/api/categories').then(r => r.json());
-                
-                // Render checkboxes for form
-                const checkboxesContainer = document.getElementById('categoriesCheckboxes');
-                checkboxesContainer.innerHTML = categories.map(c => 
-                    `<label style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem;background:var(--gray-100);border-radius:6px;">
-                        <input type="checkbox" name="category" value="${c.id}" class="form-control" style="width:auto;margin:0;"> ${c.name}
-                    </label>`
-                ).join('');
-                
-                // Render category management list
-                document.getElementById('categoriesList').innerHTML = categories.map(c => 
-                    `<span class="category-tag">${c.name} <button onclick="deleteCategory(${c.id})" style="background:none;border:none;color:var(--danger);cursor:pointer;margin-left:0.3rem;font-size:1.2rem;">&times;</button></span>`
-                ).join('');
+                renderCategoriesUI();
             } catch (e) { console.error(e); }
+        }
+        
+        function renderCategoriesUI() {
+            // Checkboxes for form
+            const checkboxesContainer = document.getElementById('categoriesCheckboxes');
+            checkboxesContainer.innerHTML = categories.map(c => 
+                `<label class="category-tag" style="cursor:pointer;display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 0.8rem;background:var(--gray-100);color:var(--black);border:2px solid var(--gray-200);transition:all 0.2s;">
+                    <input type="checkbox" name="category" value="${c.id}" style="width:auto;margin:0;cursor:pointer;"> ${c.name}
+                </label>`
+            ).join('');
+            
+            // Management list
+            document.getElementById('categoriesList').innerHTML = categories.map(c => 
+                `<span class="category-tag" style="display:inline-flex;align-items:center;cursor:pointer;" title="Кликните для удаления" onclick="deleteCategory(${c.id})">
+                    ${escapeHtml(c.name)}
+                    <span style="margin-left:0.3rem;font-size:0.7rem;">×</span>
+                </span>`
+            ).join('');
         }
         
         async function addCategory() {
             const name = document.getElementById('newCategory').value.trim();
-            if (!name || !adminAuth) return;
-            await fetch('/api/categories', {
+            if (!name) { showToast('Введите название раздела', 'error'); return; }
+            if (!adminAuth) return;
+            const res = await fetch('/api/categories', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + adminAuth },
                 body: JSON.stringify({ name })
             });
-            document.getElementById('newCategory').value = '';
-            loadCategories();
+            if (res.ok) {
+                document.getElementById('newCategory').value = '';
+                await loadCategories();
+                showToast('Раздел добавлен');
+            } else {
+                showToast('Ошибка при добавлении', 'error');
+            }
         }
         
         async function deleteCategory(id) {
-            if (!adminAuth || !confirm('Удалить раздел?')) return;
-            await fetch('/api/categories/' + id, { method: 'DELETE', headers: { 'Authorization': 'Basic ' + adminAuth } });
-            loadCategories();
+            if (!adminAuth) return;
+            openModal('Удалить раздел', 'Удалить этот раздел? Статьи с этим разделом не будут удалены.', async () => {
+                const res = await fetch('/api/categories/' + id, { method: 'DELETE', headers: { 'Authorization': 'Basic ' + adminAuth } });
+                if (res.ok) {
+                    await loadCategories();
+                    loadArticles();
+                    showToast('Раздел удален');
+                } else {
+                    showToast('Ошибка при удалении', 'error');
+                }
+            });
         }
         
         // Articles
@@ -570,9 +887,21 @@
             } catch (error) { console.error('Error:', error); }
         }
         
+        function getStatusBadge(status) {
+            const statusMap = {
+                published: { class: 'status-published', text: 'Опубликовано' },
+                pending: { class: 'status-pending', text: 'На модерации' },
+                rejected: { class: 'status-rejected', text: 'Отклонено' }
+            };
+            const s = statusMap[status] || statusMap.pending;
+            return `<span class="status-badge ${s.class}">${s.text}</span>`;
+        }
+        
         function renderArticlesTable(articlesToRender) {
             const tbody = document.getElementById('articlesTable');
             const emptyState = document.getElementById('emptyState');
+            const count = document.getElementById('articleCount');
+            count.textContent = `Статей: ${articlesToRender.length}`;
             
             if (articlesToRender.length === 0) {
                 tbody.innerHTML = '';
@@ -582,56 +911,56 @@
             
             emptyState.style.display = 'none';
             tbody.innerHTML = articlesToRender.map(article => {
-                // Handle both old single categoryId and new categories array
                 let catNames = '';
                 if (article.categories && Array.isArray(article.categories)) {
-                    catNames = article.categories.map(catId => {
-                        const cat = categories.find(c => c.id == catId) || {name:'Разное'};
-                        return cat.name;
-                    }).join(', ');
-                } else if (article.categoryId) {
-                    const cat = categories.find(c => c.id == article.categoryId) || {name:'Разное'};
-                    catNames = cat.name;
+                    const catObj = categories.filter(c => article.categories.includes(c.id));
+                    catNames = catObj.map(c => `<span class="category-tag">${escapeHtml(c.name)}</span>`).join('');
                 } else {
-                    catNames = 'Разное';
+                    catNames = '<span class="category-tag">Разное</span>';
                 }
                 
-                // Status badge
-                let statusBadge = '';
-                const status = article.status || 'pending'; // default to pending if not set
-                if (status === 'published') {
-                    statusBadge = '<span class="category-tag" style="background:var(--success);color:white;">Опубликована</span>';
-                } else if (status === 'rejected') {
-                    statusBadge = '<span class="category-tag" style="background:var(--danger);color:white;">Отклонена</span>';
-                } else {
-                    statusBadge = '<span class="category-tag" style="background:var(--warning);color:black;">На модерации</span>';
-                }
+                const statusBadge = getStatusBadge(article.status || 'pending');
                 
                 return `
                     <tr>
-                        <td>${article.id}</td>
-                        <td>${article.title}</td>
-                        <td><span class="category-tag">${catNames}</span></td>
-                        <td>${article.author}</td>
+                        <td>#${article.id}</td>
+                        <td><strong>${escapeHtml(article.title)}</strong></td>
+                        <td>${catNames}</td>
+                        <td>${escapeHtml(article.author)}</td>
                         <td>${article.date}</td>
                         <td>${statusBadge}</td>
                         <td class="actions-cell">
-                            <button class="btn btn-edit" onclick="editArticle(${article.id}, '${escapeQuote(article.title)}', '${escapeQuote(article.author)}', '${escapeQuote(article.authorEmail || '')}', '${escapeQuote(article.authorPhone || '')}', '${escapeQuote(article.authorSocial || '')}', '${escapeQuote(article.content)}', [${(article.categories || (article.categoryId ? [article.categoryId] : [])).join(',')}], '${escapeQuote(article.annotation || '')}')">✏️ Редактировать</button>
-                            <button class="btn btn-delete" onclick="deleteArticle(${article.id})">🗑️ Удалить</button>
+                            <button class="btn btn-edit" onclick="editArticle(${article.id})">✏️ Редактировать</button>
+                            <button class="btn btn-danger" onclick="deleteArticle(${article.id})">🗑️ Удалить</button>
                         </td>
                     </tr>
                 `;
             }).join('');
         }
         
-        function escapeQuote(str) {
-            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[m]));
         }
         
-        // Form
+        function resetForm() {
+            isEditMode = false;
+            document.getElementById('articleForm').reset();
+            document.getElementById('articleId').value = '';
+            document.getElementById('status').value = 'pending';
+            document.getElementById('formTitle').textContent = 'Добавить статью';
+            document.getElementById('submitBtn').innerHTML = 'Добавить статью';
+            document.getElementById('cancelBtn').style.display = 'none';
+            loadCategories();
+        }
+        
+        // Form submission
         document.getElementById('articleForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!adminAuth) { alert('Сессия истекла, обновите страницу'); return; }
+            if (!adminAuth) { showToast('Сессия истекла', 'error'); return; }
+            
             const id = document.getElementById('articleId').value;
             const title = document.getElementById('title').value.trim();
             const author = document.getElementById('author').value.trim();
@@ -640,37 +969,30 @@
             const authorSocial = document.getElementById('authorSocial').value.trim();
             const content = document.getElementById('content').value.trim();
             const annotation = document.getElementById('annotation').value.trim();
+            const status = document.getElementById('status').value;
             
-            // Validation
-            if (!title) { alert('Введите заголовок статьи'); return; }
-            if (!author) { alert('Введите ФИО автора'); return; }
-            if (!authorEmail) { alert('Введите email автора'); return; }
-            // Simple email validation
+            if (!title) { showToast('Введите заголовок', 'error'); return; }
+            if (!author) { showToast('Введите автора', 'error'); return; }
+            
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(authorEmail)) { alert('Введите корректный email адрес'); return; }
-            if (!authorPhone) { alert('Введите телефон автора'); return; }
-            if (!authorSocial) { alert('Введите ссылку на социальную сеть'); return; }
-            if (!content) { alert('Введите содержание статьи'); return; }
+            if (!authorEmail || !emailPattern.test(authorEmail)) {
+                showToast('Введите корректный email', 'error');
+                return;
+            }
             
-            // Get selected category checkboxes
             const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => parseInt(cb.value));
-            if (checkedCategories.length === 0) { alert('Выберите хотя бы один раздел'); return; }
+            if (checkedCategories.length === 0) { showToast('Выберите хотя бы один раздел', 'error'); return; }
+            if (!content) { showToast('Введите содержание', 'error'); return; }
             
             const data = { 
-                title, 
-                author,
-                authorEmail,
-                authorPhone,
-                authorSocial,
-                content, 
-                annotation,
-                categories: checkedCategories
+                title, author, authorEmail, authorPhone, authorSocial,
+                content, annotation, categories: checkedCategories, status
             };
             
             try {
                 let response;
                 if (isEditMode) {
-                    response = await fetch(`/api/articles/${id}`, { 
+                    response = await fetch('/api/articles/' + id, { 
                         method: 'PUT', 
                         headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + adminAuth }, 
                         body: JSON.stringify(data) 
@@ -685,69 +1007,65 @@
                 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Ошибка при сохранении статьи');
+                    throw new Error(errorData.error || 'Ошибка при сохранении');
                 }
                 
-                if (isEditMode) {
-                    alert('Изменения сохранены');
-                } else {
-                    alert('Статья добавлена');
-                }
-                resetForm(); loadArticles();
-            } catch (error) { console.error('Error:', error); alert(error.message); }
+                showToast(isEditMode ? 'Изменения сохранены' : 'Статья добавлена');
+                resetForm();
+                loadArticles();
+            } catch (error) {
+                console.error('Error:', error);
+                showToast(error.message, 'error');
+            }
         });
         
-        function editArticle(id, title, author, authorEmail, authorPhone, authorSocial, content, categoriesArr, annotation) {
+        async function editArticle(id) {
+            const article = allArticles.find(a => a.id === id);
+            if (!article) return;
+            
             isEditMode = true;
             document.getElementById('articleId').value = id;
-            document.getElementById('title').value = title;
-            document.getElementById('author').value = author;
-            document.getElementById('authorEmail').value = authorEmail || '';
-            document.getElementById('authorPhone').value = authorPhone || '';
-            document.getElementById('authorSocial').value = authorSocial || '';
-            document.getElementById('content').value = content.replace(/\\n/g, '\n');
-            document.getElementById('annotation').value = annotation || '';
+            document.getElementById('title').value = article.title;
+            document.getElementById('author').value = article.author;
+            document.getElementById('authorEmail').value = article.authorEmail || '';
+            document.getElementById('authorPhone').value = article.authorPhone || '';
+            document.getElementById('authorSocial').value = article.authorSocial || '';
+            document.getElementById('content').value = article.content;
+            document.getElementById('annotation').value = article.annotation || '';
+            document.getElementById('status').value = article.status || 'pending';
             
-            // Set checked categories
-            const checkboxes = document.querySelectorAll('input[name="category"]');
-            checkboxes.forEach(cb => {
-                cb.checked = (categoriesArr || []).includes(parseInt(cb.value));
+            // Set checkboxes
+            document.querySelectorAll('input[name="category"]').forEach(cb => {
+                cb.checked = (article.categories || []).includes(parseInt(cb.value));
             });
             
             document.getElementById('formTitle').textContent = 'Редактировать статью';
-            document.getElementById('submitBtn').textContent = 'Сохранить изменения';
+            document.getElementById('submitBtn').innerHTML = 'Сохранить изменения';
             document.getElementById('cancelBtn').style.display = 'inline-block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        async function deleteArticle(id) { 
-            if (!adminAuth) { alert('Сессия истекла, обновите страницу'); return; }
-            if (confirm('🗑️ Удалить статью навсегда?')) { 
-                try { 
-                    const response = await fetch(`/api/articles/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Basic ' + adminAuth } });
-                    if (!response.ok) {
+        async function deleteArticle(id) {
+            const article = allArticles.find(a => a.id === id);
+            if (!article) return;
+            openModal('Удалить статью', `Удалить "${article.title}"? Это действие необратимо.`, async () => {
+                try {
+                    const response = await fetch('/api/articles/' + id, { 
+                        method: 'DELETE', 
+                        headers: { 'Authorization': 'Basic ' + adminAuth } 
+                    });
+                    if (response.ok) {
+                        loadArticles();
+                        showToast('Статья удалена');
+                    } else {
                         const errorData = await response.json();
-                        throw new Error(errorData.error || 'Ошибка при удалении статьи');
+                        showToast(errorData.error || 'Ошибка при удалении', 'error');
                     }
-                    loadArticles(); 
-                } catch (error) { console.error('Error:', error); alert(error.message); } 
-            } 
+                } catch (err) {
+                    showToast('Ошибка при удалении', 'error');
+                }
+            });
         }
-        
-        function resetForm() { 
-            isEditMode = false; 
-            document.getElementById('articleForm').reset(); 
-            document.getElementById('articleId').value = ''; 
-            document.getElementById('annotation').value = '';
-            // Uncheck all category checkboxes
-            document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = false);
-            document.getElementById('formTitle').textContent = 'Добавить статью';
-            document.getElementById('submitBtn').textContent = 'Добавить статью';
-            document.getElementById('cancelBtn').style.display = 'none';
-            loadCategories();
-        }
-        
-        document.getElementById('cancelBtn').addEventListener('click', resetForm);
         
         // Start
         init();
