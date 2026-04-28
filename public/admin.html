@@ -585,13 +585,13 @@
                         <button type="button" class="editor-btn" onclick="toggleFullscreen('content')">⤢</button>
                     </div>
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
-                        <textarea id="content" class="form-control" required style="flex: 1; min-height: 200px; font-family: 'Inter', monospace;" placeholder="Введите текст статьи..."></textarea>
+                        <textarea id="content" class="form-control" required style="flex: 1; min-height: 200px; font-family: 'Inter', monospace; resize: none;" placeholder="Введите текст статьи..."></textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Аннотация</label>
-                    <textarea id="annotation" class="form-control" rows="4" placeholder="Краткое описание статьи (не более 6 строк)..."></textarea>
+                    <textarea id="annotation" class="form-control" rows="4" style="resize: none;" placeholder="Краткое описание статьи (не более 6 строк)..."></textarea>
                 </div>
 
                 <div class="form-actions">
@@ -814,6 +814,36 @@
                 showToast('Раздел добавлен');
             } else {
                 showToast('Ошибка при добавлении', 'error');
+            }
+        }
+        
+        async function loadCategories() {
+            try {
+                categories = await fetch('/api/categories').then(r => r.json());
+                renderCategoriesUI();
+            } catch (e) { console.error(e); }
+        }
+        
+        function renderCategoriesUI() {
+            // Checkboxes for form
+            const checkboxesContainer = document.getElementById('categoriesCheckboxes');
+            if (checkboxesContainer) {
+                checkboxesContainer.innerHTML = categories.map(c => 
+                    `<label class="category-tag" style="cursor:pointer;display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 0.8rem;background:var(--gray-100);color:var(--black);border:2px solid var(--gray-200);transition:all 0.2s;">
+                        <input type="checkbox" name="category" value="${c.id}" style="width:auto;margin:0;cursor:pointer;"> ${c.name}
+                    </label>`
+                ).join('');
+            }
+            
+            // Management list
+            const categoriesList = document.getElementById('categoriesList');
+            if (categoriesList) {
+                categoriesList.innerHTML = categories.map(c => 
+                    `<span class="category-tag" style="display:inline-flex;align-items:center;cursor:pointer;" title="Кликните для удаления" onclick="deleteCategory(${c.id})">
+                        ${escapeHtml(c.name)}
+                        <span style="margin-left:0.3rem;font-size:0.7rem;">×</span>
+                    </span>`
+                ).join('');
             }
         }
         
