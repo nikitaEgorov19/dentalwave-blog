@@ -688,6 +688,11 @@
                     throw new Error(errorData.error || 'Ошибка при сохранении статьи');
                 }
                 
+                if (isEditMode) {
+                    alert('Изменения сохранены');
+                } else {
+                    alert('Статья добавлена');
+                }
                 resetForm(); loadArticles();
             } catch (error) { console.error('Error:', error); alert(error.message); }
         });
