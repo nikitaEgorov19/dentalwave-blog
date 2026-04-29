@@ -419,22 +419,24 @@
             background: var(--gray-100);
         }
         
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            z-index: 10000;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-        }
-        
-        .toast.show {
-            transform: translateX(0);
-        }
+            .toast {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                transform: translateX(150%);
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                opacity: 0;
+            }
+
+            .toast.show {
+                transform: translateX(0);
+                opacity: 1;
+            }
         
         .toast-success {
             background: var(--success);
@@ -912,8 +914,10 @@
                         <td>${article.date}</td>
                         <td>${statusBadge}</td>
                         <td class="actions-cell">
-                            <button class="btn btn-edit" onclick="editArticle(${article.id})">✏️ Редактировать</button>
-                            <button class="btn btn-danger" onclick="deleteArticle(${article.id})">🗑️ Удалить</button>
+                            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                                <button class="btn btn-edit" onclick="editArticle(${article.id})" style="margin: 0; width: 100%; text-align: left; justify-content: flex-start;">✏️ Редактировать</button>
+                                <button class="btn btn-danger" onclick="deleteArticle(${article.id})" style="margin: 0; width: 100%; text-align: left; justify-content: flex-start;">🗑️ Удалить</button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -992,7 +996,7 @@
                     throw new Error(errorData.error || 'Ошибка при сохранении');
                 }
                 
-                showToast(isEditMode ? 'Изменения сохранены' : 'Статья добавлена');
+                showToast(isEditMode ? 'Изменения сохранены' : 'Статья успешно сохранена');
                 resetForm();
                 loadArticles();
             } catch (error) {
@@ -1038,7 +1042,7 @@
                     });
                     if (response.ok) {
                         loadArticles();
-                        showToast('Статья удалена');
+                        showToast('Статья успешно удалена');
                     } else {
                         const errorData = await response.json();
                         showToast(errorData.error || 'Ошибка при удалении', 'error');
