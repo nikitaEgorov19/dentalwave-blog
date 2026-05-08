@@ -646,6 +646,7 @@
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             font-weight: 700;
+            pointer-events: auto;
         }
         
         .exit-fullscreen.show {
@@ -1194,13 +1195,19 @@
         }
         
         function exitFullscreen() {
-            if (!currentFullscreenField) return;
-            const textarea = document.getElementById(currentFullscreenField);
-            if (textarea) textarea.classList.remove('fullscreen');
-            document.getElementById('exitFullscreen').classList.remove('show');
-            currentFullscreenField = null;
-            document.body.style.overflow = '';
+            const btn = document.getElementById('exitFullscreen');
+            if (currentFullscreenField) {
+                const textarea = document.getElementById(currentFullscreenField);
+                if (textarea) textarea.classList.remove('fullscreen');
+                if (btn) btn.classList.remove('show');
+                currentFullscreenField = null;
+                document.body.style.overflow = '';
+            }
         }
+        
+        setTimeout(() => {
+            document.getElementById('exitFullscreen').addEventListener('click', exitFullscreen);
+        }, 100);
         
         // ESC to exit fullscreen
         document.addEventListener('keydown', (e) => {
