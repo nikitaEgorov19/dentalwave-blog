@@ -953,11 +953,6 @@
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label>Аннотация<span class="required-star">*</span></label>
-                    <textarea id="articleAnnotation" class="form-control annotation-area" required placeholder="Краткая аннотация статьи (не более 6 строк)" maxlength="1000"></textarea>
-                </div>
-                
                 <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
             </form>
         </div>
@@ -1234,10 +1229,9 @@
             const email = document.getElementById('email').value.trim();
             const topic = document.getElementById('topic').value.trim();
             const articleText = document.getElementById('articleText').value.trim();
-            const articleAnnotation = document.getElementById('articleAnnotation').value.trim();
             
             // Validation
-            if (!fio || !workplace || !city || !phone || !email || !topic || !articleText || !articleAnnotation) {
+            if (!fio || !workplace || !city || !phone || !email || !topic || !articleText) {
                 showToast('Пожалуйста, заполните все обязательные поля', 'error');
                 return;
             }
@@ -1266,7 +1260,6 @@
                         authorPhone: phone,
                         authorSocial: socialLink || '',
                         content: articleText,
-                        annotation: articleAnnotation,
                         categories: [],
                         workplace: workplace,
                         city: city
@@ -1274,7 +1267,7 @@
                 });
                 
                 if (response.ok) {
-                    showToast('✓ Заявка успешно отправлена! Статья находится на модерации. Ждите письма на email.');
+                    showToast('✓ Заявка успешно отправлена! Статья находится на модерации.');
                     form.reset();
                     formContainer.classList.remove('show');
                     showFormBtn.style.display = 'block';
