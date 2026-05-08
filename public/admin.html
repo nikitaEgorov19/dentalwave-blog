@@ -344,15 +344,10 @@
             background: var(--success);
             color: white;
         }
-        
+
         .status-pending {
             background: var(--warning);
             color: black;
-        }
-        
-        .status-rejected {
-            background: var(--danger);
-            color: white;
         }
         
         .status-select {
@@ -557,7 +552,6 @@
                         <select id="status" class="status-select">
                             <option value="published">Опубликовано</option>
                             <option value="pending" selected>На модерации</option>
-                            <option value="rejected">Отклонено</option>
                         </select>
                     </div>
                 </div>
@@ -615,7 +609,6 @@
                             <option value="all">Все статусы</option>
                             <option value="published">Опубликовано</option>
                             <option value="pending">На модерации</option>
-                            <option value="rejected">Отклонено</option>
                         </select>
                     </div>
                     <div style="text-align: right; color: var(--gray-300);" id="articleCount">Статей: 0</div>
@@ -874,8 +867,7 @@
         function getStatusBadge(status) {
             const statusMap = {
                 published: { class: 'status-published', text: 'Опубликовано' },
-                pending: { class: 'status-pending', text: 'На модерации' },
-                rejected: { class: 'status-rejected', text: 'Отклонено' }
+                pending: { class: 'status-pending', text: 'На модерации' }
             };
             const s = statusMap[status] || statusMap.pending;
             return `<span class="status-badge ${s.class}">${s.text}</span>`;
