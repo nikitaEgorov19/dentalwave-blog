@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
+         :root {
             --white: #ffffff;
             --gold: #d4af37;
             --gold-light: #f4e5b2;
@@ -23,7 +24,11 @@
             --warning: #ffc107;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -32,8 +37,8 @@
             line-height: 1.7;
             overflow-x: hidden;
         }
-        
         /* Header */
+        
         header {
             position: sticky;
             top: 0;
@@ -43,7 +48,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         
         .search-wrap {
@@ -79,7 +84,8 @@
             border: 2px solid transparent;
         }
         
-        .nav-tab:hover, .nav-tab.active {
+        .nav-tab:hover,
+        .nav-tab.active {
             color: var(--black);
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             border-color: var(--gold);
@@ -98,8 +104,8 @@
         .admin-btn:hover {
             background: var(--gold-dark);
         }
-        
         /* Sections */
+        
         .section {
             padding: 5rem 2rem;
             max-width: 1400px;
@@ -125,8 +131,8 @@
             margin: 1rem auto 0;
             border-radius: 2px;
         }
-        
         /* Main Section */
+        
         #main {
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
@@ -201,12 +207,12 @@
             max-width: 420px;
             height: auto;
             border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
             border: 4px solid var(--gold);
             loading: lazy;
         }
-        
         /* Feed */
+        
         #feed {
             background: var(--gray-100);
         }
@@ -246,7 +252,7 @@
             background: var(--white);
             border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             border: 1px solid var(--gray-200);
             position: relative;
@@ -271,7 +277,7 @@
         
         .article-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
             border-color: var(--gold);
         }
         
@@ -378,8 +384,8 @@
             font-size: 1.1rem;
             grid-column: 1 / -1;
         }
-        
         /* Application Section */
+        
         #application {
             background: var(--white);
         }
@@ -412,7 +418,7 @@
             counter-increment: criteria;
             padding: 1rem 0 1rem 2.5rem;
             position: relative;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 1rem;
             line-height: 1.6;
         }
@@ -460,8 +466,8 @@
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(212, 175, 55, 0.4);
         }
-        
         /* Application Form */
+        
         .application-form-container {
             max-width: 900px;
             margin: 0 auto;
@@ -478,7 +484,7 @@
             background: var(--gray-100);
             padding: 3rem;
             border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
             border: 2px solid var(--gold);
             position: relative;
         }
@@ -644,7 +650,7 @@
             display: none;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             font-weight: 700;
             pointer-events: auto;
         }
@@ -684,8 +690,8 @@
             cursor: not-allowed;
             transform: none;
         }
-        
         /* About Section */
+        
         #about {
             background: var(--gray-100);
         }
@@ -752,8 +758,8 @@
             background: var(--gold);
             transform: translateY(-5px);
         }
-        
         /* Footer */
+        
         footer {
             background: var(--black);
             color: var(--white);
@@ -761,8 +767,8 @@
             padding: 2rem;
             border-top: 3px solid var(--gold);
         }
-        
         /* Toast */
+        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -775,7 +781,7 @@
             z-index: 10001;
             transform: translateX(150%);
             transition: transform 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             max-width: 400px;
         }
         
@@ -790,8 +796,8 @@
         .toast-error {
             background: var(--danger);
         }
-        
         /* Animations */
+        
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -803,44 +809,76 @@
             }
         }
         
-        html { scroll-behavior: smooth; }
-        
+        html {
+            scroll-behavior: smooth;
+        }
         /* Responsive */
+        
         @media (max-width: 768px) {
-            header { flex-wrap: wrap; gap: 1rem; padding: 1rem; }
-            #globalSearch { width: 100%; }
-            #globalSearch:focus { width: 100%; }
+            header {
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            #globalSearch {
+                width: 100%;
+            }
+            #globalSearch:focus {
+                width: 100%;
+            }
             #main {
                 grid-template-columns: 1fr;
                 text-align: center;
                 padding: 3rem 1rem;
             }
-            .main-content h1 { font-size: 2.5rem; }
-            .main-stats { justify-content: center; gap: 1.5rem; }
-            .stat-number { font-size: 2.2rem; }
-            .about-content { grid-template-columns: 1fr; gap: 2rem; }
-            .form-row { grid-template-columns: 1fr; gap: 0; }
-            .section-title { font-size: 2.2rem; }
-            .application-form { padding: 1.5rem; }
-            .apply-btn-toggle { width: 100%; }
-            .section { padding: 3rem 1rem; }
+            .main-content h1 {
+                font-size: 2.5rem;
+            }
+            .main-stats {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            .stat-number {
+                font-size: 2.2rem;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+            .application-form {
+                padding: 1.5rem;
+            }
+            .apply-btn-toggle {
+                width: 100%;
+            }
+            .section {
+                padding: 3rem 1rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div class="search-wrap">
             <input type="text" id="globalSearch" placeholder="🔍 Поиск статей...">
         </div>
-        
+
         <nav style="display: flex; gap: 0.5rem;">
             <a href="#main" class="nav-tab active">Главная</a>
             <a href="#feed" class="nav-tab">Лента публикаций</a>
             <a href="#application" class="nav-tab">Заявка</a>
             <a href="#about" class="nav-tab">О журнале</a>
         </nav>
-        
+
         <div>
             <a href="/admin" target="_blank" class="admin-btn">👤 Admin</a>
         </div>
@@ -852,7 +890,7 @@
             <h1>DentalWave</h1>
             <div class="subtitle">Ведущий стоматологический журнал</div>
             <p class="description">Профессиональный ресурс для стоматологов, содержащий актуальные исследования, обзоры и новости мирового уровня. Мы объединяем экспертов и предоставляем только проверенную информацию.</p>
-            
+
             <div class="main-stats">
                 <div class="stat-item">
                     <span class="stat-number" id="articlesCount">—</span>
@@ -876,20 +914,20 @@
     <!-- Feed Section -->
     <section id="feed" class="section">
         <h2 class="section-title">Лента публикаций</h2>
-        
+
         <div style="margin-bottom: 2rem;">
             <div id="categoryButtons" style="display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center;">
                 <button class="category-btn active" data-category="all">Все</button>
             </div>
         </div>
-        
+
         <div class="articles-grid" id="articlesGrid"></div>
     </section>
 
     <!-- Application Section -->
     <section id="application" class="section">
         <h2 class="section-title">Заявка на публикацию</h2>
-        
+
         <div class="criteria-box">
             <h3>Требования к статьям:</h3>
             <ul class="criteria-list">
@@ -906,9 +944,9 @@
         <div class="application-form-container" id="applicationContainer">
             <form class="application-form" id="applicationForm">
                 <button type="button" class="close-form-btn" id="closeFormBtn" title="Закрыть форму">×</button>
-                
+
                 <h3>📋 Форма заявки на публикацию</h3>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>ФИО<span class="required-star">*</span></label>
@@ -919,12 +957,12 @@
                         <input type="text" class="form-control" id="city" required placeholder="Москва">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Место работы/учёбы<span class="required-star">*</span></label>
                     <input type="text" class="form-control" id="workplace" required placeholder='Например: "студент", "магистрант", "аспирант" или название учреждения'>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>Телефон<span class="required-star">*</span></label>
@@ -935,17 +973,17 @@
                         <input type="email" class="form-control" id="email" required placeholder="example@mail.ru">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Ссылка на социальную сеть<span class="optional-text">(необязательно)</span></label>
                     <input type="url" class="form-control" id="socialLink" placeholder="https://vk.com/username или https://t.me/username">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Тема статьи<span class="required-star">*</span></label>
                     <input type="text" class="form-control" id="topic" required placeholder="Название вашей статьи">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Содержание статьи<span class="required-star">*</span></label>
                     <div class="textarea-wrap">
@@ -953,7 +991,7 @@
                         <textarea id="articleText" class="form-control content-area" required placeholder="Введите полный текст статьи..."></textarea>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
             </form>
         </div>
@@ -973,9 +1011,9 @@
                     <span>📞</span>
                     <span>+7 (495) 123-45-67</span>
                 </div>
-                <div class="contact-item">
+<div class="contact-item">
                     <span>📧</span>
-                    <span>guccihighwaters@mail.ru</span>
+                    <span>Vld.belokonev@yandex.ru</span>
                 </div>
                 <div class="social-links">
                     <a href="https://t.me/Akulii_chlen" class="social-link" title="Telegram">TG</a>
@@ -992,7 +1030,7 @@
 
     <!-- Exit Fullscreen Button (hidden by default) -->
     <button class="exit-fullscreen" id="exitFullscreen" onclick="exitFullscreen()">×</button>
-    
+
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
@@ -1010,7 +1048,9 @@
                 const res = await fetch('/api/config');
                 const data = await res.json();
                 BASE_URL = data.baseUrl || '';
-            } catch (e) { BASE_URL = ''; }
+            } catch (e) {
+                BASE_URL = '';
+            }
         }
 
         async function initData() {
@@ -1022,7 +1062,7 @@
                 // Only show published articles on public feed
                 allArticles = articlesRes.filter(a => (a.status || 'pending') === 'published');
                 categories = categoriesRes;
-                
+
                 renderCategoryButtons();
                 applyFiltersAndRender();
             } catch (e) {
@@ -1041,7 +1081,7 @@
                 btn.addEventListener('click', () => setCategoryFilter(cat.id));
                 container.appendChild(btn);
             });
-            
+
             container.querySelector('[data-category="all"]').addEventListener('click', () => setCategoryFilter('all'));
         }
 
@@ -1056,14 +1096,14 @@
         function getFilteredArticles() {
             let filtered = allArticles;
             if (currentCategoryFilter !== 'all') {
-                filtered = filtered.filter(a => 
-                    a.categoryId == currentCategoryFilter || 
+                filtered = filtered.filter(a =>
+                    a.categoryId == currentCategoryFilter ||
                     (a.categories && a.categories.includes(parseInt(currentCategoryFilter)))
                 );
             }
             if (currentSearchQuery) {
                 const q = currentSearchQuery.toLowerCase();
-                filtered = filtered.filter(a => 
+                filtered = filtered.filter(a =>
                     a.title.toLowerCase().includes(q) ||
                     a.author.toLowerCase().includes(q)
                 );
@@ -1080,33 +1120,41 @@
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>"']/g, m => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
             }[m]));
         }
 
         function renderArticlesGrid(articlesToRender) {
             const grid = document.getElementById('articlesGrid');
-            
+
             if (articlesToRender.length === 0) {
                 grid.innerHTML = '<div class="empty">Статей не найдено</div>';
                 return;
             }
-            
+
             grid.innerHTML = articlesToRender.map(article => {
-                let catNames = '';
-                if (article.categories && Array.isArray(article.categories)) {
-                    catNames = article.categories.map(cid => {
-                        const cat = categories.find(c => c.id == cid) || {name:'Разное'};
-                        return cat.name;
-                    }).join(', ');
-                } else {
-                    const cat = categories.find(c => c.id == article.categoryId) || {name:'Разное'};
-                    catNames = cat.name;
-                }
-                
-                const views = article.views || 0;
-                
-                return `
+                        let catNames = '';
+                        if (article.categories && Array.isArray(article.categories)) {
+                            catNames = article.categories.map(cid => {
+                                const cat = categories.find(c => c.id == cid) || {
+                                    name: 'Разное'
+                                };
+                                return cat.name;
+                            }).join(', ');
+                        } else {
+                            const cat = categories.find(c => c.id == article.categoryId) || {
+                                name: 'Разное'
+                            };
+                            catNames = cat.name;
+                        }
+
+                        const views = article.views || 0;
+
+                        return `
                 <div class="article-card">
                     <span class="category">${escapeHtml(catNames)}</span>
                     <h3>${escapeHtml(article.title)}</h3>
@@ -1297,4 +1345,5 @@
         });
     </script>
 </body>
+
 </html>
